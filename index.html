@@ -2,63 +2,61 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
   <title>Math Worksheets</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="main.css">
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 <body>
-  <div class="container">
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="current-tab" data-bs-toggle="tab" data-bs-target="#current" type="button" role="tab" aria-controls="current" aria-selected="true">Current Problem</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="log-tab" data-bs-toggle="tab" data-bs-target="#log" type="button" role="tab" aria-controls="log" aria-selected="false">Log</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Settings</button>
-      </li>
-    </ul>
-    <div class="tab-content" id="myTabContent">
-      <div class="tab-pane fade show active" id="current" role="tabpanel" aria-labelledby="current-tab">
-        <div class="content">
-          <h1>Problem</h1>
-          <ul class="problems list-group list-group-flush">
-          </ul>
-        </div>
-        <div class="numpad-container">
-          <div class="numpad-grid">
-              <button class="numpad-btn numpad-clear">AC</button>
-              <button class="numpad-btn numpad-delete">&lt;</button>
-              <button class="numpad-btn numpad-num" value="7">7</button>
-              <button class="numpad-btn numpad-num" value="8">8</button>
-              <button class="numpad-btn numpad-num" value="9">9</button>
-              <button class="numpad-btn numpad-num" value="4">4</button>
-              <button class="numpad-btn numpad-num" value="5">5</button>
-              <button class="numpad-btn numpad-num" value="6">6</button>
-              <button class="numpad-btn numpad-num" value="1">1</button>
-              <button class="numpad-btn numpad-num" value="2">2</button>
-              <button class="numpad-btn numpad-num" value="3">3</button>
-              <button class="numpad-btn numpad-num" value=".">.</button>
-              <button class="numpad-btn numpad-num" value="0">0</button>
-              <button class="numpad-btn numpad-ans">V</button>
-          </div>
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="current-tab" data-bs-toggle="tab" data-bs-target="#current" type="button" role="tab">Current Problem</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="log-tab" data-bs-toggle="tab" data-bs-target="#log" type="button" role="tab" >Log</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab">Settings</button>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="current" role="tabpanel">
+      <div class="content">
+        <h1>Problem</h1>
+        <ul class="problems list-group list-group-flush">
+        </ul>
+      </div>
+      <div class="numpad-container">
+        <div class="numpad-grid">
+            <button class="numpad-btn numpad-clear">AC</button>
+            <button class="numpad-btn numpad-delete">&lt;</button>
+            <button class="numpad-btn numpad-num" value="7">7</button>
+            <button class="numpad-btn numpad-num" value="8">8</button>
+            <button class="numpad-btn numpad-num" value="9">9</button>
+            <button class="numpad-btn numpad-num" value="4">4</button>
+            <button class="numpad-btn numpad-num" value="5">5</button>
+            <button class="numpad-btn numpad-num" value="6">6</button>
+            <button class="numpad-btn numpad-num" value="1">1</button>
+            <button class="numpad-btn numpad-num" value="2">2</button>
+            <button class="numpad-btn numpad-num" value="3">3</button>
+            <button class="numpad-btn numpad-num" value=".">.</button>
+            <button class="numpad-btn numpad-num" value="0">0</button>
+            <button class="numpad-btn numpad-ans">V</button>
         </div>
       </div>
-      <div class="tab-pane fade" id="log" role="tabpanel" aria-labelledby="log-tab">
-        <div class="content">
-          <h1>Log</h1>
-          <ul class="log-list list-group list-group-flush">
-          </ul>
-        </div>
+    </div>
+    <div class="tab-pane fade" id="log" role="tabpanel">
+      <div class="content">
+        <h1>Log</h1>
+        <ul class="log-list list-group list-group-flush">
+        </ul>
       </div>
-      <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-        <div class="content">
-          <h1>Settings</h1>
-          <!-- Settings content goes here -->
-        </div>
+    </div>
+    <div class="tab-pane fade" id="settings" role="tabpanel">
+      <div class="content">
+        <h1>Settings</h1>
+        <!-- Settings content goes here -->
       </div>
     </div>
   </div>
@@ -100,7 +98,7 @@
 
       // V(확정) 버튼 클릭 시 입력값 확정 및 새 li 생성
       $('.numpad-ans').click(function() {
-        if (userInput.trim() === '') return; // Ignore empty input
+        // if (userInput.trim() === '') return; // Ignore empty input
         currentLi.find('.user-input').text(userInput);  // Set final value
         userInput = '';  // Clear input
         questionNumber++;  // Increment question number
@@ -117,22 +115,6 @@
       });
     });
 
-    // Fullscreen mode for mobile
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').then(function(registration) {
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      }, function(err) {
-        console.log('ServiceWorker registration failed: ', err);
-      });
-    }
-
-    window.addEventListener('load', function() {
-      if (window.matchMedia('(display-mode: standalone)').matches) {
-        document.documentElement.style.height = '100%';
-        document.body.style.height = '100%';
-        document.body.style.overflow = 'hidden';
-      }
-    });
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
