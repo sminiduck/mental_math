@@ -42,7 +42,7 @@ body{
     height: 100%;
   }
   
-  /* 넘패드 버튼 기본 스타일 */
+  /* General Button Styles */
   .numpad-btn {
     width: 100%;
     padding: 20px;
@@ -50,35 +50,39 @@ body{
     border: none;
     background-color: #e0e0e0;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.3s ease;
     box-sizing: border-box;
   }
   
-  .numpad-btn:hover {
+  .numpad-btn:hover,
+  button:hover {
     background-color: #ccc;
   }
 
-  .numpad-btn:active {
+  .numpad-btn:active,
+  button:active {
     background-color: #bbb;
+    transition: background-color 0.1s ease; /* Faster transition for active state */
   }
   
-  /* AC 버튼 두 칸 차지 */
+  /* Specific Button Styles */
   .numpad-clear {
     background-color: #d32f2f;
     grid-column: span 2;
   }
   
-  /* 삭제 버튼 */
   .numpad-delete {
     background-color: #f9a825;
   }
-  
-  button:hover {
-    background-color: #ccc;
+
+  /* Add transition for list item active state */
+  .list-group-item {
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  button:active {
-    background-color: #bbb;
+  .list-group-item.active {
+    background-color: #007bff;
+    color: #fff;
   }
 
   /* Media query for smaller screens */
