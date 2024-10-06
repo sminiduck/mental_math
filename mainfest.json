@@ -1,24 +1,16 @@
 {
-    "name": "암산문제", 
-    "start_url": "index.html",  
-    "scope": ".", 
-    "display": "standalone", 
+    "name": "mental math",
+    "short_name": "math",
+    "start_url": "/",  
+    "display": "fullscreen", 
     "background_color": "#fff", 
     "theme_color": "#f351b5", 
-    "description": "Keep running until you're super sweaty", 
-    "dir": "ltr", 
-    "orientation": "portrait-primary",
     "icons": [
         {
-          "src": "cone.png",
-          "type": "image/png",
-          "sizes": "48x48"
-        },
-        {
-          "src": "cone.png.png",
-          "type": "image/png",
-          "sizes": "96x96"
+            "src": "cone.png",
+            "type": "image/png",
+            "sizes": "512x512"
         }
-      ]
+    ]
 }
   
