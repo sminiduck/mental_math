@@ -72,3 +72,10 @@
       font-size: 1rem;
     }
   }
+
+  .correct {
+    background-color: rgb(60, 134, 16);
+  }
+  
+  /* .incorrect {
+  } */

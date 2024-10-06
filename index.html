@@ -62,18 +62,24 @@
   </div>
 
   <script>
-    $(document).ready(function() {
+    // $(document).ready(function() {
       let userInput = '';
       let questionNumber = 1; // Initialize question number
       let currentLi = createNewListItem(questionNumber);
 
       // Function to create a new list item with the required structure
       function createNewListItem(number) {
+        const num1 = Math.floor(Math.random() * 19) + 1;
+        const num2 = Math.floor(Math.random() * 19) + 1;
+        const questionContent = `${num1} x ${num2} = `;
+        const correctAnswer = num1 * num2;
+
         return $(`
           <li class="list-group-item">
             <span class="question-number">${number}. </span>
-            <span class="question-content">문제 내용</span>
+            <span class="question-content">${questionContent}</span>
             <span class="user-input"></span>
+            <span class="correct-answer" style="display:none;">${correctAnswer}</span>
           </li>
         `).appendTo('.problems');
       }
@@ -99,13 +105,25 @@
       // V(확정) 버튼 클릭 시 입력값 확정 및 새 li 생성
       $('.numpad-ans').click(function() {
         // if (userInput.trim() === '') return; // Ignore empty input
-        currentLi.find('.user-input').text(userInput);  // Set final value
-        userInput = '';  // Clear input
-        questionNumber++;  // Increment question number
-        currentLi.appendTo('.log-list');  // Move current item to log
-        currentLi = createNewListItem(questionNumber);  // Create new list item
-        let content = $('.content');
-        content.scrollTop(content.prop("scrollHeight"));  // Scroll to bottom
+        const correctAnswer = currentLi.find('.correct-answer').text();
+        if (userInput === correctAnswer) {
+          currentLi.addClass('correct');
+          currentLi.appendTo('.log-list');
+          userInput = '';
+          questionNumber++;
+          currentLi = createNewListItem(questionNumber);  // Create new list item
+        } else {
+          currentLi.addClass('incorrect');
+          currentLi.appendTo('.log-list');
+          // 문제 내용과 문항 번호를 동일하게 유지
+          old_currentLi = currentLi;
+          currentLi = createNewListItem(questionNumber);  // Create new list item
+          currentLi.find('.question-number').text(`${questionNumber}. `);
+          currentLi.find('.question-content').text(old_currentLi.find('.question-content').text());
+          currentLi.find('.user-input').text(userInput);
+          currentLi.find('.correct-answer').text(correctAnswer);
+        }
+
       });
 
       // List item click event to toggle active class in log tab
@@ -113,7 +131,10 @@
         $('.list-group-item').removeClass('active');
         $(this).addClass('active');
       });
-    });
+      $('h1').on('click', function() {
+        $('.list-group-item').removeClass('active');
+      });
+    // });
 
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
