@@ -1,9 +1,10 @@
 const CACHE_NAME = 'my-site-cache-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/main.css',
-  '/cone.png'
+  '/mental_math/',
+  '/mental_math/index.html',
+  '/mental_math/main.css',
+  '/mental_math/cone.png',
+  '/mental_math/manifest.json',
 ];
 
 self.addEventListener('install', function(event) {
