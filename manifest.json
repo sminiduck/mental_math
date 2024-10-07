@@ -2,7 +2,7 @@
     "name": "mental math",
     "short_name": "math",
     "start_url": "/",  
-    "display": "fullscreen", 
+    "display": "standalone", 
     "background_color": "#fff", 
     "theme_color": "#f351b5", 
     "icons": [
