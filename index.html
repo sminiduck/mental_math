@@ -13,6 +13,7 @@
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 <body>
+  <header><nav>
   <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
       <button class="nav-link active" id="current-tab" data-bs-toggle="tab" data-bs-target="#current" type="button" role="tab">Current Problem</button>
@@ -24,46 +25,56 @@
       <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab">Settings</button>
     </li>
   </ul>
+  </nav></header>
+
+  <main>
   <div class="tab-content" id="myTabContent">
+
+    <!-- Current Problem tab -->
     <div class="tab-pane fade show active" id="current" role="tabpanel">
-      <div class="content">
-        <h1>Problem</h1>
-        <ul class="problems list-group list-group-flush">
-        </ul>
-      </div>
-      <div class="numpad-container">
-        <div class="numpad-grid">
-            <button class="numpad-btn numpad-clear">AC</button>
-            <button class="numpad-btn numpad-delete">&lt;</button>
-            <button class="numpad-btn numpad-num" value="7">7</button>
-            <button class="numpad-btn numpad-num" value="8">8</button>
-            <button class="numpad-btn numpad-num" value="9">9</button>
-            <button class="numpad-btn numpad-num" value="4">4</button>
-            <button class="numpad-btn numpad-num" value="5">5</button>
-            <button class="numpad-btn numpad-num" value="6">6</button>
-            <button class="numpad-btn numpad-num" value="1">1</button>
-            <button class="numpad-btn numpad-num" value="2">2</button>
-            <button class="numpad-btn numpad-num" value="3">3</button>
-            <button class="numpad-btn numpad-num" value=".">.</button>
-            <button class="numpad-btn numpad-num" value="0">0</button>
-            <button class="numpad-btn numpad-ans">V</button>
+      <div class="current-container">
+        <div class="content">
+          <ul class="problems list-group list-group-flush">
+          </ul>
+        </div>
+        <div class="numpad-container">
+          <div class="numpad-grid">
+              <button class="numpad-btn numpad-clear">AC</button>
+              <button class="numpad-btn numpad-delete">&lt;</button>
+              <button class="numpad-btn numpad-num" value="7">7</button>
+              <button class="numpad-btn numpad-num" value="8">8</button>
+              <button class="numpad-btn numpad-num" value="9">9</button>
+              <button class="numpad-btn numpad-num" value="4">4</button>
+              <button class="numpad-btn numpad-num" value="5">5</button>
+              <button class="numpad-btn numpad-num" value="6">6</button>
+              <button class="numpad-btn numpad-num" value="1">1</button>
+              <button class="numpad-btn numpad-num" value="2">2</button>
+              <button class="numpad-btn numpad-num" value="3">3</button>
+              <button class="numpad-btn numpad-num" value=".">.</button>
+              <button class="numpad-btn numpad-num" value="0">0</button>
+              <button class="numpad-btn numpad-ans">V</button>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Log tab -->
     <div class="tab-pane fade" id="log" role="tabpanel">
       <div class="content">
-        <h1>Log</h1>
         <ul class="log-list list-group list-group-flush">
         </ul>
       </div>
     </div>
+
+    <!-- Settings tab -->
     <div class="tab-pane fade" id="settings" role="tabpanel">
       <div class="content">
-        <h1>Settings</h1>
         <!-- Settings content goes here -->
       </div>
     </div>
   </div>
+  </main>
+  
 
   <script>
     if ('serviceWorker' in navigator) {
