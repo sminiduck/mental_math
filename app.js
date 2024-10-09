@@ -30,20 +30,12 @@ $(document).ready(function() {
         return new Problem(info, `${num1} x ${num2} = `, num1 * num2);
     }
 
-    /** problems를 관리하는 test class
-     * 1. 문제를 len_test만큼 생성
-     * 2. 현재 문제를 .problem-info, .question에 반영
-     * 3. 정답을 입력하면 다음 문제로 넘어감
-     * 4. 오답을 입력하면 반응없음
-     * 5. 유저의 입력을 즉시 .user-ans에 반영
-     * 6. V클릭시 정답을 확인한다.
-     * 
-     */
     class MathTest {
         constructor(len_test) {
-            this.problems = [];
             this.len_test = len_test;
-            this.current_problem = 0;
+            this.cur = 0;
+            this.problems = [];
+            this.userAns = '';
             this.init();
         }
 
@@ -55,62 +47,78 @@ $(document).ready(function() {
         }
 
         updateProblem() {
-            $('.problem-info').text(this.problems[this.current_problem].info);
-            $('.question').text(this.problems[this.current_problem].question);
+            $('.problem-info').text(this.problems[this.cur].info);
+            $('.question').text(this.problems[this.cur].question);
         }
 
-        checkAnswer() {
-            if (this.problems[this.current_problem].IsRight(parseInt($('.user-ans').text()))) {
-                this.current_problem++;
-                console.log('Correct!');
+        clickNumber(num) {
+            this.userAns += num;
+            $('.user-ans').text(this.userAns);
+        }
+
+        clickDelete() {
+            this.userAns = this.userAns.slice(0, -1);
+            $('.user-ans').text(this.userAns);
+        }
+
+        clickClear() {
+            this.userAns = '';
+            $('.user-ans').text('');
+        }
+
+        clickAns() {
+            const currentProblem = this.problems[this.cur];
+            console.log(currentProblem.IsRight, this,this.userAns);
+            if (currentProblem.IsRight(this.userAns)) {
+                createNewListItem(this.cur + 1);
+                this.cur++;
+
+                if (this.cur === this.len_test) {
+                    alert('모든 문제를 풀었습니다.');
+                    this.cur = 0;
+                }
+
+                // Clear user answer and update the problem
+                this.userAns = '';
                 $('.user-ans').text('');
-                userInput = '';
                 this.updateProblem();
             }
         }
+
     }
 
     const mtest = new MathTest(10);
 
-    let userInput = '';
-    // let currentLi = createNewListItem(questionNumber);
-
-    // // Function to create a new list item with the required structure
-    // function createNewListItem(number) {
-    //     const num1 = Math.floor(Math.random() * 19) + 1;
-    //     const num2 = Math.floor(Math.random() * 19) + 1;
-    //     const question = `${num1} x ${num2} = `;
-    //     const correctAnswer = num1 * num2;
-
-    //     return $(`
-    //     <li class="list-group-item">
-    //         <span class="question-number">${number}. </span>
-    //         <span class="question-content">${question}</span>
-    //         <span class="user-input"></span>
-    //         <span class="correct-answer" style="display:none;">${correctAnswer}</span>
-    //     </li>
-    //     `).appendTo('.problems');
-    // }
+    // Function to create a new list item with the required structure
+    function createNewListItem(number) {
+        const num1 = Math.floor(Math.random() * 19) + 1;
+        const num2 = Math.floor(Math.random() * 19) + 1;
+        const question = `${num1} x ${num2} = `;
+        const correctAnswer = num1 * num2;
+        return $(`
+        <li class="list-group-item">
+            <span class="question-number">${number}. </span>
+            <span class="question-content">${question}</span>
+            <span class="user-input"></span>
+            <span class="correct-answer" style="display:none;">${correctAnswer}</span>
+        </li>
+        `).appendTo('.log-list');
+    }
 
     $('.numpad-num').click(function() {
-        userInput += this.value;
-        $('.user-ans').text(userInput);
+        mtest.clickNumber($(this).text());
     });
 
     $('.numpad-delete').click(function() {
-        userInput = userInput.slice(0, -1);  // Remove last character
-        $('.user-ans').text(userInput);
+        mtest.clickDelete();
     });
 
     $('.numpad-clear').click(function() {
-        userInput = '';  // Clear input
-        $('.user-ans').text(userInput);
+        mtest.clickClear();
     });
 
-    // V(확정) 버튼 클릭 시 입력값 확정 및 새 li 생성
     $('.numpad-ans').click(function() {
-        // if (userInput.trim() === '') return; // Ignore empty input
-        mtest.checkAnswer(userInput);
+        mtest.clickAns();
     });
 
     // List item click event to toggle active class in log tab
