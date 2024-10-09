@@ -3,12 +3,27 @@ body {
   height: 100%;
 }
 
-.problems {
-  font-size: 5rem; /* 글꼴 크기 크게 설정 */
-  list-style: none; /* 리스트 스타일 제거 */
-  padding: 0;
-  margin: 0;
+
+/** 1. .problem-info, .question, user-ans에 적절한 css를 적용하세요. **/
+.problem-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5em 1em;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
 }
+
+.question {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.user-ans {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
 
 .navbar {
   height: 50px; /* 네비게이션 바 높이 */
@@ -86,21 +101,6 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Media query for smaller screens */
-@media (max-width: 450px) {
-  .numpad-btn {
-    padding: 15px;
-    font-size: 1.2rem;
-  }
-
-  .content h1 {
-    font-size: 2rem;
-  }
-
-  .list-group-item {
-    font-size: 1rem;
-  }
-}
 
 .correct {
   background-color: rgb(60, 134, 16);

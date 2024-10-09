@@ -1,5 +1,16 @@
 {
-    "liveServer.settings.port": 5502,
     "liveServer.settings.CustomBrowser": "chrome",
-    "liveServer.settings.AdvanceCustomBrowserCmdLine": "chrome --disable-web-security --user-data-dir=\"/tmp/chrome_dev\""
+    "liveServer.settings.AdvanceCustomBrowserCmdLine": "chrome --disable-web-security --user-data-dir=\"/tmp/chrome_dev\"",
+    "liveServer.settings.root": "/",
+    "liveServer.settings.NoBrowser": false,
+    "liveServer.settings.ignoreFiles": [
+        ".vscode/**",
+        "**/*.scss",
+        "**/*.sass"
+    ],
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+    "liveServer.settings.AutoStart": true,
+    "livePreview.defaultPreviewPath": "/index.html",
+    "liveServer.settings.port": 5501
 }
