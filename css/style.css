@@ -86,22 +86,6 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Media query for smaller screens */
-@media (max-width: 450px) {
-  .numpad-btn {
-    padding: 15px;
-    font-size: 1.2rem;
-  }
-
-  .content h1 {
-    font-size: 2rem;
-  }
-
-  .list-group-item {
-    font-size: 1rem;
-  }
-}
-
 .correct {
   background-color: rgb(60, 134, 16);
 }
