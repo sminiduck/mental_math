@@ -1,10 +1,18 @@
+/* Global Styles */
 body {
   margin: 0;
   height: 100%;
 }
 
+/* Navigation Bar */
+.navbar {
+  height: 50px; /* 네비게이션 바 높이 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-/** 1. .problem-info, .question, user-ans에 적절한 css를 적용하세요. **/
+/* Problem Information Section */
 .problem-info {
   display: flex;
   justify-content: space-between;
@@ -14,30 +22,21 @@ body {
   border-bottom: 1px solid #dee2e6;
 }
 
-.question {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.user-ans {
+.question, .user-ans {
   font-size: 1.5rem;
   font-weight: bold;
 }
 
 
-.navbar {
-  height: 50px; /* 네비게이션 바 높이 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
+/* Main Container */
 .current-container {
   display: flex;
   flex-direction: column;
   height: calc(100vh - 50px); /* 네비게이션 바 높이를 뺀 높이 */
 }
 
+/* Content Section */
 .content {
   flex: 1; /* 50% 높이 */
   padding: 0.8em;
@@ -47,7 +46,7 @@ body {
   align-items: center;
 }
 
-/* 넘패드 전체 영역 */
+/* Numpad Section */
 .numpad-container {
   flex: 1; /* 50% 높이 */
   width: 100%;
@@ -57,7 +56,6 @@ body {
   height: 50%; /* 부모 컨테이너의 50% 높이 */
 }
 
-/* Ensure the numpad buttons are responsive */
 .numpad-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -65,7 +63,6 @@ body {
   height: 100%;
 }
 
-/* General Button Styles */
 .numpad-btn {
   width: 100%;
   font-size: 1.5rem;
@@ -80,7 +77,6 @@ body {
   transition: background-color 0.1s ease; /* Faster transition for active state */
 }
 
-/* Specific Button Styles */
 .numpad-clear {
   background-color: #d32f2f;
   grid-column: span 2;
@@ -90,7 +86,7 @@ body {
   background-color: #f9a825;
 }
 
-/* Add transition for list item active state */
+/* List Group Item Styles */
 .list-group-item {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -101,10 +97,11 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-
+/* Correct Answer Style */
 .correct {
   background-color: rgb(60, 134, 16);
 }
 
+/* Incorrect Answer Style */
 /* .incorrect {
 } */

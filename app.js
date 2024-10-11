@@ -8,7 +8,7 @@
 //     });
 // }
 
-$(document).ready(function() {
+document.addEventListener('DOMContentLoaded', function() {
 
     // 문제 class
     class Problem {
@@ -19,6 +19,7 @@ $(document).ready(function() {
         }
 
         IsRight(ans) {
+            ans = parseInt(ans);
             return ans === this.answer;
         }
     }
@@ -67,15 +68,15 @@ $(document).ready(function() {
         }
 
         clickAns() {
+            if (this.cur === -1) { return; }
             const currentProblem = this.problems[this.cur];
-            console.log(currentProblem.IsRight, this,this.userAns);
+            appendToLog(currentProblem, this.userAns);
             if (currentProblem.IsRight(this.userAns)) {
-                createNewListItem(this.cur + 1);
                 this.cur++;
 
                 if (this.cur === this.len_test) {
                     alert('모든 문제를 풀었습니다.');
-                    this.cur = 0;
+                    this.cur = -1;
                 }
 
                 // Clear user answer and update the problem
@@ -87,20 +88,17 @@ $(document).ready(function() {
 
     }
 
-    const mtest = new MathTest(10);
+    const mtest = new MathTest(3);
 
     // Function to create a new list item with the required structure
-    function createNewListItem(number) {
-        const num1 = Math.floor(Math.random() * 19) + 1;
-        const num2 = Math.floor(Math.random() * 19) + 1;
-        const question = `${num1} x ${num2} = `;
-        const correctAnswer = num1 * num2;
+    function appendToLog(problem, userAns) {
+        const number = problem.info;
+        const question = problem.question;
         return $(`
         <li class="list-group-item">
             <span class="question-number">${number}. </span>
             <span class="question-content">${question}</span>
-            <span class="user-input"></span>
-            <span class="correct-answer" style="display:none;">${correctAnswer}</span>
+            <span class="user-input">${userAns}</span>
         </li>
         `).appendTo('.log-list');
     }
