@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         IsRight(ans) {
             ans = parseInt(ans);
+            console.log(ans, this.answer);
             return ans === this.answer;
         }
     }
@@ -35,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
         constructor(len_test) {
             this.len_test = len_test;
             this.cur = 0;
+            this.pointer = 0;
             this.problems = [];
             this.userAns = '';
             this.init();
@@ -44,45 +46,49 @@ document.addEventListener('DOMContentLoaded', function() {
             for (let i = 0; i < this.len_test; i++) {
                 this.problems.push(createProblem(i+1));
             }
-            this.updateProblem();
+            this.updateProblem(this.pointer, 0);
         }
 
-        updateProblem() {
-            $('.problem-info').text(this.problems[this.cur].info);
-            $('.question').text(this.problems[this.cur].question);
+        nextPointer() {
+            this.pointer++;
+            if (this.pointer === 2) { this.pointer = 0; }
+        }
+
+        updateProblem(pointer, cur) {
+            $('.problem-info').eq(pointer).text(this.problems[cur].info);
+            $('.question').eq(pointer).text(this.problems[cur].question);
+        }
+
+        updateUserAns(cur) {
+            $('.user-ans').eq(cur).text(this.userAns);
         }
 
         clickNumber(num) {
             this.userAns += num;
-            $('.user-ans').text(this.userAns);
+            this.updateUserAns(this.pointer);
         }
 
         clickDelete() {
             this.userAns = this.userAns.slice(0, -1);
-            $('.user-ans').text(this.userAns);
+            this.updateUserAns(this.pointer);
         }
 
         clickClear() {
             this.userAns = '';
-            $('.user-ans').text('');
+            this.updateUserAns(this.pointer);
         }
 
         clickAns() {
             if (this.cur === -1) { return; }
             const currentProblem = this.problems[this.cur];
             appendToLog(currentProblem, this.userAns);
+            
             if (currentProblem.IsRight(this.userAns)) {
                 this.cur++;
-
-                if (this.cur === this.len_test) {
-                    alert('모든 문제를 풀었습니다.');
-                    this.cur = -1;
-                }
-
-                // Clear user answer and update the problem
-                this.userAns = '';
-                $('.user-ans').text('');
-                this.updateProblem();
+                if (this.cur === this.len_test) {this.cur = -1;}
+                this.clickClear();
+                this.updateProblem(this.pointer, this.cur+1);
+                this.nextPointer();
             }
         }
 

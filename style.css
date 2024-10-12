@@ -38,13 +38,23 @@ body {
 
 /* Content Section */
 .content {
-  flex: 1; /* 50% 높이 */
+  flex: 1;
   padding: 0.8em;
   padding-left: 2em;
   display: flex;
-  height: 50%; /* 부모 컨테이너의 50% 높이 */
+  flex-direction: column; /* 수직 배치를 위해 column으로 변경 */
+  height: 50%;
   align-items: center;
 }
+
+/* Problem Section */
+.problem {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 50%; /* 부모 컨테이너의 50% 높이 */
+}
+
 
 /* Numpad Section */
 .numpad-container {
