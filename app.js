@@ -18,6 +18,11 @@ if ('serviceWorker' in navigator) {
                     }
                 });
             });
+
+            
+            // 앱을 킬 때마다 업데이트 확인
+            registration.update();
+            
         }).catch(function(err) {
             console.log('ServiceWorker registration failed: ', err);
         });
