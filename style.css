@@ -18,11 +18,18 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 0.5em 1em;
+  margin-right: 5%;
   background-color: #f8f9fa;
   border-bottom: 1px solid #dee2e6;
 }
 
-.question, .user-ans {
+.question {
+  margin-right: 1em;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.user-ans {
   font-size: 1.5rem;
   font-weight: bold;
 }

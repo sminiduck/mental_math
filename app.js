@@ -27,16 +27,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 19단 문제 생성기
     function createProblem(info) {
-        const num1 = Math.floor(Math.random() * 19) + 1;
-        const num2 = Math.floor(Math.random() * 19) + 1;
-        return new Problem(info, `${num1} x ${num2} = `, num1 * num2);
+        const num1 = Math.floor(Math.random() * 9) + 1;
+        const num2 = Math.floor(Math.random() * 9) + 1;
+        return new Problem(info, `${num1} x ${num2} =`, num1 * num2);
     }
 
     class MathTest {
         constructor(len_test) {
             this.len_test = len_test;
             this.cur = 0;
-            this.pointer = 0;
+            this.display = 0;
             this.problems = [];
             this.userAns = '';
             this.init();
@@ -46,55 +46,64 @@ document.addEventListener('DOMContentLoaded', function() {
             for (let i = 0; i < this.len_test; i++) {
                 this.problems.push(createProblem(i+1));
             }
-            this.updateProblem(this.pointer, 0);
+            this.problems.push(new Problem('x', '', 0));
+            this.problems.push(new Problem('x', '', 0));
+            this.updateProblem(0, 0);
+            this.updateProblem(1, 1);
         }
 
-        nextPointer() {
-            this.pointer++;
-            if (this.pointer === 2) { this.pointer = 0; }
+        nextdisplay() {
+            this.display++;
+            if (this.display === 2) { this.display = 0; }
         }
 
-        updateProblem(pointer, cur) {
-            $('.problem-info').eq(pointer).text(this.problems[cur].info);
-            $('.question').eq(pointer).text(this.problems[cur].question);
+        updateProblem(display, cur) {
+            $('.problem-info').eq(display).text(this.problems[cur].info);
+            $('.question').eq(display).text(this.problems[cur].question);
         }
 
-        updateUserAns(cur) {
-            $('.user-ans').eq(cur).text(this.userAns);
+        updateUserAns(display) {
+            $('.user-ans').eq(display).text(this.userAns);
         }
 
         clickNumber(num) {
             this.userAns += num;
-            this.updateUserAns(this.pointer);
+            this.updateUserAns(this.display);
         }
 
         clickDelete() {
             this.userAns = this.userAns.slice(0, -1);
-            this.updateUserAns(this.pointer);
+            this.updateUserAns(this.display);
         }
 
         clickClear() {
             this.userAns = '';
-            this.updateUserAns(this.pointer);
+            this.updateUserAns(this.display);
         }
 
         clickAns() {
-            if (this.cur === -1) { return; }
             const currentProblem = this.problems[this.cur];
             appendToLog(currentProblem, this.userAns);
             
             if (currentProblem.IsRight(this.userAns)) {
                 this.cur++;
-                if (this.cur === this.len_test) {this.cur = -1;}
                 this.clickClear();
-                this.updateProblem(this.pointer, this.cur+1);
-                this.nextPointer();
+                if (this.cur === this.len_test + 1) {this.cur = -1; return;}
+                this.updateProblem(this.display, this.cur+1);
+                this.nextdisplay();
+            }
+
+            if (this.cur === this.len_test) {
+                $('.numpad-num').prop('disabled', true);
+                $('.numpad-delete').prop('disabled', true);
+                $('.numpad-clear').prop('disabled', true);
+                $('.numpad-ans').prop('disabled', true);
             }
         }
 
     }
 
-    const mtest = new MathTest(3);
+    const mtest = new MathTest(10);
 
     // Function to create a new list item with the required structure
     function appendToLog(problem, userAns) {
