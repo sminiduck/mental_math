@@ -45,6 +45,12 @@ body {
 
 /* Content Section */
 .content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.problem-content {
   flex: 1;
   padding: 0.8em;
   padding-left: 2em;
@@ -104,8 +110,18 @@ body {
 }
 
 /* List Group Item Styles */
+.log-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .list-group-item {
   transition: background-color 0.3s ease, color 0.3s ease;
+  width: 80%;
 }
 
 .list-group-item.active {
