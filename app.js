@@ -1,9 +1,25 @@
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
         navigator.serviceWorker.register('service-worker.js').then(function(registration) {
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-        }, function(err) {
-        console.log('ServiceWorker registration failed: ', err);
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+
+            // 서비스 워커가 활성화되면 업데이트 확인
+            if (registration.waiting) {
+                registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+            }
+
+            // 서비스 워커가 업데이트되면 페이지 새로고침
+            registration.addEventListener('updatefound', function() {
+                const newWorker = registration.installing;
+                newWorker.addEventListener('statechange', function() {
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                        newWorker.postMessage({ type: 'SKIP_WAITING' });
+                        window.location.reload();
+                    }
+                });
+            });
+        }).catch(function(err) {
+            console.log('ServiceWorker registration failed: ', err);
         });
     });
 }
