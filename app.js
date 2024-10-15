@@ -20,9 +20,6 @@ if ('serviceWorker' in navigator) {
             });
 
 
-            // 앱을 킬 때마다 업데이트 확인
-            registration.update();
-
         }).catch(function (err) {
             console.log('ServiceWorker registration failed: ', err);
         });
@@ -162,9 +159,25 @@ if ('serviceWorker' in navigator) {
     };
 
     // 팩토리얼 함수
+    // 팩토리얼 함수 (메모이제이션을 사용하여 성능 개선)
+    const factorialCache = {
+        0: 1,
+        1: 1,
+        2: 2,
+        3: 6,
+        4: 24,
+        5: 120,
+        6: 720,
+        7: 5040,
+        8: 40320,
+        9: 362880,
+        10: 3628800
+    };
     function factorial(n) {
-        if (n === 0) return 1;
-        return n * factorial(n - 1);
+        if (n <= 1) return 1;
+        if (factorialCache[n]) return factorialCache[n];
+        factorialCache[n] = n * factorial(n - 1);
+        return factorialCache[n];
     }
 
     // 문제 생성기
