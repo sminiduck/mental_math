@@ -1,14 +1,4 @@
-const now = new Date();
-const formattedDate = new Intl.DateTimeFormat('ko-KR', {
-  year: 'numeric',
-  month: '2-digit',
-  day: '2-digit',
-  hour: '2-digit',
-  minute: '2-digit',
-  second: '2-digit',
-  hour12: false
-}).format(now).replace(/[^\d]/g, '').replace(/(\d{8})(\d{6})/, '$1-$2');
-const CACHE_NAME = 'mm-cache-v' + formattedDate;
+const CACHE_NAME = 'mm-cache-v1'; // 초기 캐시 이름
 const urlsToCache = [
   './',
   './index.html',
