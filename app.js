@@ -158,7 +158,6 @@ if ('serviceWorker' in navigator) {
         }
     };
 
-    // 팩토리얼 함수
     // 팩토리얼 함수 (메모이제이션을 사용하여 성능 개선)
     const factorialCache = {
         0: 1,
