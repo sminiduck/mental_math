@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mm-cache-v1'; // 초기 캐시 이름
+const CACHE_NAME = 'mm-cache-v20241015-104940';
 const urlsToCache = [
   './',
   './index.html',
@@ -20,6 +20,18 @@ self.addEventListener('install', function(event) {
 
 self.addEventListener('activate', function(event) {
   console.log('Service Worker activated');
+  const cacheWhitelist = [CACHE_NAME];
+  event.waitUntil(
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(
+        cacheNames.map(function(cacheName) {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
 });
 
 self.addEventListener('fetch', function(event) {
