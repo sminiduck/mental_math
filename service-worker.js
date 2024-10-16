@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mm-cache-v20241016-105946';
+const CACHE_NAME = 'mm-cache-v20241016-112943';
 const urlsToCache = [
   './',
   './index.html',
@@ -11,7 +11,11 @@ self.addEventListener('install', function(event) {
   event.waitUntil(
     caches.open(CACHE_NAME).then(function(cache) {
       console.log('Opened cache');
-      return cache.addAll(urlsToCache);
+      return cache.addAll(urlsToCache).then(function() {
+        // 캐시 추가가 완료된 후 skipWaiting 호출
+        self.skipWaiting();
+        console.log('Service worker skipWaiting called');
+      });
     }).catch(function(err) {
       console.error('Failed to open cache or add resources to cache: ', err);
     })
