@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mm-cache-v20241016-113254';
+const CACHE_NAME = 'mm-cache-v20241016-113949';
 const urlsToCache = [
   './',
   './index.html',
@@ -6,6 +6,12 @@ const urlsToCache = [
   './app.webmanifest',
   './assets/cone.png'
 ];
+
+self.addEventListener('message', (event) => {
+  if (event.data.type === 'SKIP_WAITING') {
+      self.skipWaiting(); // 새로운 서비스 워커를 즉시 활성화
+  }
+});
 
 self.addEventListener('install', function(event) {
   event.waitUntil(
@@ -57,3 +63,5 @@ self.addEventListener('fetch', function(event) {
     })
   );
 });
+
+

@@ -14,12 +14,10 @@ if ('serviceWorker' in navigator) {
                 newWorker.addEventListener('statechange', function () {
                     if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                         newWorker.postMessage({ type: 'SKIP_WAITING' });
-                        window.location.reload();
+                        window.location.reload(); // 새로 고침
                     }
                 });
             });
-
-
         }).catch(function (err) {
             console.log('ServiceWorker registration failed: ', err);
         });
