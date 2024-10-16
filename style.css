@@ -95,9 +95,11 @@ body {
   box-sizing: border-box;
 }
 
-.numpad-btn:active {
-  background-color: #bbb;
-  transition: background-color 0.1s ease; /* Faster transition for active state */
+/* style.css */
+.numpad-btn:active,
+.numpad-btn.button-active {
+    background-color: #d3d3d3; /* 버튼이 눌렸을 때의 배경색 */
+    transition: background-color 0.1s; /* 부드러운 전환 효과 */
 }
 
 .numpad-clear {

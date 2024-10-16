@@ -285,15 +285,41 @@ if ('serviceWorker' in navigator) {
     `).appendTo('.log-list');
     }
 
-    $('.numpad-num').click(function () {
+    // 클릭 이벤트와 터치 이벤트를 모두 처리하도록 설정
+    function addTouchEvent(selector, handler) {
+        $(selector).on('touchstart', function(event) {
+            event.preventDefault(); // 기본 터치 동작 방지
+            $(this).addClass('button-active'); // 버튼 누름 효과 추가
+            handler.call(this, event);
+        });
+       
+        $(selector).on('touchend', function(event) {
+            $(this).removeClass('button-active'); // 버튼 누름 효과 제거
+        });
+    
+        $(selector).on('touchcancel', function(event) {
+            $(this).removeClass('button-active'); // 버튼 누름 효과 제거
+        });
+    }
+
+    $('.numpad-num').on('click', function () {
+        mtest.clickNumber($(this).text());
+    });
+    addTouchEvent('.numpad-num', function () {
         mtest.clickNumber($(this).text());
     });
 
-    $('.numpad-delete').click(function () {
+    $('.numpad-delete').on('click', function () {
+        mtest.clickDelete();
+    });
+    addTouchEvent('.numpad-delete', function () {
         mtest.clickDelete();
     });
 
-    $('.numpad-clear').click(function () {
+    $('.numpad-clear').on('click', function () {
+        mtest.clickClear();
+    });
+    addTouchEvent('.numpad-clear', function () {
         mtest.clickClear();
     });
 
