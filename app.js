@@ -1,6 +1,7 @@
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
         navigator.serviceWorker.register('service-worker.js').then(function (registration) {
+            registration.update();
             console.log('ServiceWorker registration successful with scope: ', registration.scope);
 
             // 서비스 워커가 활성화되면 업데이트 확인
