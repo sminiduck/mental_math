@@ -29,7 +29,7 @@
 
 
 
-    import { Problem, problemGenerators} from "./mathUtils";
+    import { Problem, problemGenerators} from "./mathUtils.js";
 
 
     // 활성화된 문제 생성기 설정
@@ -48,15 +48,17 @@
 
     // 문제 생성기
     function createProblem(info, enabledGenerators) {
-        const enabledProblemTypes = Object.keys(problemGenerators).filter(key => enabledGenerators[key]);
-        const randomIndex = Math.floor(Math.random() * enabledProblemTypes.length);
-        return problemGenerators[enabledProblemTypes[randomIndex]](info);
+        const enabledLi = Object.keys(problemGenerators)
+                .filter(key => enabledGenerators[key]);
+        const randomIndex = Math.floor(Math.random() * enabledLi.length);
+        return problemGenerators[
+                enabledLi[randomIndex]](info);
     }
 
 
     class MathTest {
-        constructor(len_test) {
-            this.len_test = len_test;
+        constructor(testLen) {
+            this.testLen = testLen;
             this.cur = 0;
             this.display = 0;
             this.problems = [];
@@ -65,7 +67,7 @@
         }
 
         init() {
-            for (let i = 0; i < this.len_test; i++) {
+            for (let i = 0; i < this.testLen; i++) {
                 this.problems.push(createProblem(i + 1, enabledGenerators));
             }
             this.problems.push(new Problem('x', '', 0));
@@ -74,20 +76,26 @@
             this.updateProblem(1, 1);
         }
 
-        nextdisplay() {
+        // display control
+        nextDisplay() {
             this.display++;
             if (this.display === 2) { this.display = 0; }
         }
 
         updateProblem(display, cur) {
-            $('.problem-info').eq(display).html(this.problems[cur].info);
-            $('.question').eq(display).html(this.problems[cur].question);
+            $('.problem-info').eq(display)
+            .html(this.problems[cur].info);
+            
+            $('.question').eq(display)
+            .html(this.problems[cur].question);
         }
 
         updateUserAns(display) {
             $('.user-ans').eq(display).text(this.userAns);
         }
 
+
+        // event handler
         clickNumber(num) {
             this.userAns += num;
             this.updateUserAns(this.display);
@@ -105,18 +113,20 @@
 
         clickAns() {
             if (this.userAns === '') return;
-            const currentProblem = this.problems[this.cur];
-            appendToLog(currentProblem, this.userAns);
 
+            const currentProblem = this.problems[this.cur];
+            
             if (currentProblem.IsRight(this.userAns)) {
                 this.cur++;
                 this.clickClear();
-                if (this.cur === this.len_test + 1) { this.cur = -1; return; }
-                this.updateProblem(this.display, this.cur + 1);
-                this.nextdisplay();
-            }
 
-            if (this.cur === this.len_test) {
+                this.updateProblem(this.display, this.cur + 1);
+                this.nextDisplay();
+            }
+            
+            appendToLog(currentProblem, this.userAns);
+            
+            if (this.cur === this.testLen) {
                 $('.numpad-num').prop('disabled', true);
                 $('.numpad-delete').prop('disabled', true);
                 $('.numpad-clear').prop('disabled', true);
@@ -126,20 +136,7 @@
 
     }
 
-    const mtest = new MathTest(20);
-
-    // Function to create a new list item with the required structure
-    function appendToLog(problem, userAns) {
-        const number = problem.info;
-        const question = problem.question;
-        return $(`
-    <li class="list-group-item">
-        <span class="question-number">${number}. </span>
-        <span class="question-content">${question}</span>
-        <span class="user-input">${userAns}</span>
-    </li>
-    `).appendTo('.log-list');
-    }
+    const mtest = new MathTest(3);
 
     // 클릭 이벤트와 터치 이벤트를 모두 처리하도록 설정
     function addTouchEvent(selector, handler) {
@@ -183,7 +180,20 @@
         mtest.clickAns();
     });
 
-    // List item click event to toggle active class in log tab
+
+    function appendToLog(problem, userAns) {
+        const number = problem.info;
+        const question = problem.question;
+        return $(`
+    <li class="list-group-item">
+        <span class="question-number">${number}. </span>
+        <span class="question-content">${question}</span>
+        <span class="user-input">${userAns}</span>
+    </li>
+    `).appendTo('.log-list');
+    }
+
+
     $('.log-list').on('click', '.list-group-item', function () {
         $('.list-group-item').removeClass('active');
         $(this).addClass('active');

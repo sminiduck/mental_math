@@ -112,6 +112,7 @@ const factorialCache = {
     9: 362880,
     10: 3628800
 };
+
 function factorial(n) {
     if (n <= 1) return 1;
     if (factorialCache[n]) return factorialCache[n];
