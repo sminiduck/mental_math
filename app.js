@@ -25,12 +25,8 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+import { Problem, problemGenerators } from "./mathUtils.js";
 document.addEventListener('DOMContentLoaded', function () {
-
-
-
-    import { Problem, problemGenerators} from "./mathUtils.js";
-
 
     // 활성화된 문제 생성기 설정
     const enabledGenerators = {
@@ -41,18 +37,20 @@ document.addEventListener('DOMContentLoaded', function () {
         createLogProblem: true,
         createCombinationProblem: true,
         createPermutationProblem: true,
-        createExponentProblem: true
+        createExponentProblem: true,
+        createInverseProblem: false,
+        createMod7Problem: true
     };
-    
+
 
 
     // 문제 생성기
     function createProblem(info, enabledGenerators) {
         const enabledLi = Object.keys(problemGenerators)
-                .filter(key => enabledGenerators[key]);
+            .filter(key => enabledGenerators[key]);
         const randomIndex = Math.floor(Math.random() * enabledLi.length);
         return problemGenerators[
-                enabledLi[randomIndex]](info);
+            enabledLi[randomIndex]](info);
     }
 
 
@@ -84,10 +82,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         updateProblem(display, cur) {
             $('.problem-info').eq(display)
-            .html(this.problems[cur].info);
-            
+                .html(this.problems[cur].info);
+
             $('.question').eq(display)
-            .html(this.problems[cur].question);
+                .html(this.problems[cur].question);
         }
 
         updateUserAns(display) {
@@ -115,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (this.userAns === '') return;
 
             const currentProblem = this.problems[this.cur];
-            
+
             if (currentProblem.IsRight(this.userAns)) {
                 this.cur++;
                 this.clickClear();
@@ -123,9 +121,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.updateProblem(this.display, this.cur + 1);
                 this.nextDisplay();
             }
-            
+
             appendToLog(currentProblem, this.userAns);
-            
+
             if (this.cur === this.testLen) {
                 $('.numpad-num').prop('disabled', true);
                 $('.numpad-delete').prop('disabled', true);
@@ -140,17 +138,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 클릭 이벤트와 터치 이벤트를 모두 처리하도록 설정
     function addTouchEvent(selector, handler) {
-        $(selector).on('touchstart', function(event) {
+        $(selector).on('touchstart', function (event) {
             event.preventDefault(); // 기본 터치 동작 방지
             $(this).addClass('button-active'); // 버튼 누름 효과 추가
             handler.call(this, event);
         });
-       
-        $(selector).on('touchend', function(event) {
+
+        $(selector).on('touchend', function (event) {
             $(this).removeClass('button-active'); // 버튼 누름 효과 제거
         });
-    
-        $(selector).on('touchcancel', function(event) {
+
+        $(selector).on('touchcancel', function (event) {
             $(this).removeClass('button-active'); // 버튼 누름 효과 제거
         });
     }

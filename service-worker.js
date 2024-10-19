@@ -1,10 +1,12 @@
-const CACHE_NAME = 'mm-cache-v20241019-053428';
+const CACHE_NAME = 'mm-cache-v20241019-111500';
 const urlsToCache = [
   './',
   './index.html',
   './style.css',
+  './app.js',
+  './mathUtils.js',
   './app.webmanifest',
-  './assets/cone.png'
+  './assets/cone.png',
 ];
 
 self.addEventListener('message', (event) => {
