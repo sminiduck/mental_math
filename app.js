@@ -27,6 +27,13 @@ if ('serviceWorker' in navigator) {
 
 // document.addEventListener('DOMContentLoaded', function () {
 
+
+
+
+
+
+
+
     // 정수형 정답 검증 함수
     function isIntegerCorrect(userAns, correctAnswer) {
         return parseInt(userAns) === correctAnswer;
@@ -44,7 +51,7 @@ if ('serviceWorker' in navigator) {
         const randomIndex = Math.floor(Math.random() * arr.length);
         return arr[randomIndex];
     }
-
+    
     // 일정한 간격의 시퀀스에서 무작위로 하나의 숫자를 선택하는 함수
     function getRandomNumberInSequence(start, end, step) {
         const sequence = [];
@@ -52,13 +59,13 @@ if ('serviceWorker' in navigator) {
         const adjustedStart = Math.round(start * multiplier);
         const adjustedEnd = Math.round(end * multiplier);
         const adjustedStep = Math.round(step * multiplier);
-    
+        
         for (let i = adjustedStart; i <= adjustedEnd; i += adjustedStep) {
             sequence.push(i / multiplier);
         }
         return getRandomElementFromArray(sequence);
     }   
-
+    
     // 문제 class
     class Problem {
         constructor(info, question, answer, IsRight) {
@@ -68,7 +75,19 @@ if ('serviceWorker' in navigator) {
             this.IsRight = IsRight;
         }
     }
-
+    
+    // 활성화된 문제 생성기 설정
+    const enabledGenerators = {
+        createMultiplicationProblem: true,
+        createSqrtProblem: true,
+        createSinProblem: true,
+        createTanProblem: true,
+        createLogProblem: true,
+        createCombinationProblem: true,
+        createPermutationProblem: true,
+        createExponentProblem: true
+    };
+    
     // 문제 생성기 객체
     const problemGenerators = {
         createMultiplicationProblem(info) {
@@ -185,17 +204,6 @@ if ('serviceWorker' in navigator) {
         return problemGenerators[enabledProblemTypes[randomIndex]](info);
     }
 
-    // 활성화된 문제 생성기 설정
-    const enabledGenerators = {
-        createMultiplicationProblem: true,
-        createSqrtProblem: true,
-        createSinProblem: true,
-        createTanProblem: true,
-        createLogProblem: true,
-        createCombinationProblem: true,
-        createPermutationProblem: true,
-        createExponentProblem: true
-    };
 
     class MathTest {
         constructor(len_test) {
