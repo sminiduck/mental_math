@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
-    const mtest = new MathTest(3);
+    const mtest = new MathTest(30);
 
     // 클릭 이벤트와 터치 이벤트를 모두 처리하도록 설정
     function addTouchEvent(selector, handler) {
