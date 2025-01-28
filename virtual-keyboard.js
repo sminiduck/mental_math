@@ -72,33 +72,23 @@ class VirtualKeyboard extends HTMLElement {
       const buttons = this.shadowRoot.querySelectorAll('.key');
       buttons.forEach(button => {
         button.addEventListener('click', (e) => this.handleKeyPress(e));
+        button.addEventListener('touchstart', (e) => this.handleKeyPress(e));
       });
     }
   
     // 키 클릭 처리
-    handleKeyPress(event) {
-      const key = event.target.getAttribute('data-key');
-      const resultInput = document.querySelector('#result');
-  
-      if (key === '=') {
-        // 계산 처리
-        try {
-          this.inputStream = eval(this.inputStream).toString();
-        } catch {
-          this.inputStream = 'Error';
-        }
-      } else {
-        // 입력 값 추가
-        this.inputStream += key;
-      }
-  
-      // 외부 입력 필드 업데이트
-      if (resultInput) {
-        resultInput.value = this.inputStream;
-      }
+    handleKeyPress(e) {
+      const key = e.target.dataset.key;
+      // 커스텀 이벤트 생성
+      const event = new CustomEvent('key-press', {
+        detail: { key },
+        bubbles: true,
+        composed: true
+      });
+      // 이벤트 디스패치
+      this.dispatchEvent(event);
     }
   }
   
   // 사용자 정의 요소 등록
   customElements.define('virtual-keyboard', VirtualKeyboard);
-  
