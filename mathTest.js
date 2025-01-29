@@ -1,8 +1,6 @@
 import { problemGenerators } from "./mathUtils.js";
 export { MathTest };
 
-
-
 class MathTest {
     constructor(testLen) {
         this.testLen = testLen;
@@ -48,17 +46,19 @@ class MathTest {
     }
 
     updateProblem(display, cur) {
-        $('.problem-info').eq(display)
-            .html(this.problems[cur].info);
+        const questionDisplay = document.querySelector('question-display').shadowRoot;
+        const problemInfo = questionDisplay.querySelectorAll('.problem-info')[display];
+        const question = questionDisplay.querySelectorAll('.question')[display];
 
-        $('.question').eq(display)
-            .html(this.problems[cur].question);
+        problemInfo.innerHTML = this.problems[cur].info;
+        question.innerHTML = this.problems[cur].question;
     }
 
     updateUserAns(display) {
-        $('.user-ans').eq(display).text(this.userAns);
+        const questionDisplay = document.querySelector('question-display').shadowRoot;
+        const userAns = questionDisplay.querySelectorAll('.user-ans')[display];
+        userAns.textContent = this.userAns;
     }
-
 
     // event handler
     clickNumber(num) {
@@ -90,11 +90,11 @@ class MathTest {
         }
 
         if (this.cur === this.testLen) {
-            $('.numpad-num').prop('disabled', true);
-            $('.numpad-delete').prop('disabled', true);
-            $('.numpad-clear').prop('disabled', true);
-            $('.numpad-ans').prop('disabled', true);
+            const questionDisplay = document.querySelector('question-display').shadowRoot;
+            questionDisplay.querySelectorAll('.numpad-num').forEach(button => button.disabled = true);
+            questionDisplay.querySelectorAll('.numpad-delete').forEach(button => button.disabled = true);
+            questionDisplay.querySelectorAll('.numpad-clear').forEach(button => button.disabled = true);
+            questionDisplay.querySelectorAll('.numpad-ans').forEach(button => button.disabled = true);
         }
     }
-
 }
