@@ -35,6 +35,19 @@ class MultiplicationProblem extends Problem {
     }
 }
 
+// 나머지 문제 class
+class Mod7Problem extends Problem {
+    constructor(num) {
+        const question = `${num} mod 7 =`;
+        const answer = num % 7;
+        super(question, answer);
+    }
+
+    isRight(userAnswer) {
+        return isIntegerCorrect(userAnswer, this.answer);
+    }
+}
+
 // 제곱근 문제 class
 class SqrtProblem extends Problem {
     constructor(num) {
@@ -175,6 +188,11 @@ const problemGenerators = {
             correctAnswer,
             (userAns) => isIntegerCorrect(userAns, correctAnswer)
         );
+    },
+    createMod7Problem() {
+        const domain = createDomain([[1, 31, 1]], []);
+        const num = getRandomFromSet(domain);
+        return new Mod7Problem(num);
     },
 };
 

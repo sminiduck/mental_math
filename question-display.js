@@ -3,9 +3,13 @@ class QuestionDisplay extends HTMLElement {
         super();
         this.attachShadow({ mode: 'open' });
         this.render();
+        this.userAnsElement = this.shadowRoot.querySelector('.user-ans');
+        this.stateFocused = false;
+        this.addEventListeners();
     }
 
-    render() {
+    render()
+    {
         const style = /*css*/`
             .problem-content {
                 display: flex;
@@ -28,40 +32,52 @@ class QuestionDisplay extends HTMLElement {
                 <div class="problem">
                     <div class="problem-info"></div>
                     <div class="question"></div>
-                    <div class="user-ans"></div>
+                    <input class="user-ans" type="text" />
                 </div>
             </div>
         `;
 
         this.shadowRoot.innerHTML = template;
+    }
 
-        const userAnsElement = this.shadowRoot.querySelector('.user-ans');
+    addEventListeners() {
         const functionKeys = ['Backspace', 'Delete'];
-        const numberKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        const numberKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
 
         document.addEventListener('keydown', (e) => {
+            if (!this.stateFocused) return;
             if (functionKeys.includes(e.key)) {
                 if (e.key === 'Delete') {
-                    userAnsElement.textContent = '';
+                    this.userAnsElement.value = '';
                 }
                 if (e.key === 'Backspace') {
-                    userAnsElement.textContent = userAnsElement.textContent.slice(0, -1);
+                    this.userAnsElement.value = this.userAnsElement.value.slice(0, -1);
                 }
             } else if (numberKeys.includes(e.key)) {
-                userAnsElement.textContent += e.key;
+                this.userAnsElement.value += e.key;
             }
         });
     }
 
     clear() {
-        this.shadowRoot.querySelector('.user-ans').textContent = '';
+        this.userAnsElement.value = '';
     }
 
     getUserAns() {
-        return this.shadowRoot.querySelector('.user-ans').textContent;
+        return this.userAnsElement.value;
+    }
+
+    setFocused(bool) {
+        this.stateFocused = bool;
     }
 
     updateProblem(problem) {
+        if (problem == null) {
+            this.shadowRoot.querySelector('.problem-info').innerHTML = '';
+            this.shadowRoot.querySelector('.question').innerHTML = '';
+            this.userAnsElement.value = '';
+            return;
+        }
         const problemInfo = this.shadowRoot.querySelector('.problem-info');
         const question = this.shadowRoot.querySelector('.question');
 

@@ -20,6 +20,7 @@ class WorkSheet {
     dequeueProblem() {
         let result = this.problems[0];
         this.problems.shift();
+        console.log(this.problems);
         return result;
     }
 
@@ -29,7 +30,7 @@ class WorkSheet {
 
     createProblem(index) {
         const enabledGenerators = [
-            problemGenerators.createMultiplicationProblem
+            problemGenerators.createMultiplicationProblem,
             // problemGenerators.createSqrtProblem,
             // problemGenerators.createSinProblem,
             // problemGenerators.createTanProblem,
@@ -38,7 +39,7 @@ class WorkSheet {
             // problemGenerators.createPermutationProblem,
             // problemGenerators.createExponentProblem,
             // problemGenerators.createInverseProblem,
-            // problemGenerators.createMod7Problem
+            problemGenerators.createMod7Problem
         ];
         const randomGenerator = enabledGenerators[Math.floor(Math.random() * enabledGenerators.length)];
         const problem = randomGenerator();

@@ -1,36 +1,51 @@
 import { WorkSheet } from "./worksheet.js";
 
 document.addEventListener('DOMContentLoaded', function () {
-
-
-
-
-    const worksheet = new WorkSheet(10);
-
-    worksheet.printMahtTest();
-
-    const questionDisplay = document.querySelector('question-display');
-    questionDisplay.updateProblem(worksheet.problems[0]);
-
-
+    const worksheet = new WorkSheet(3);
+    const questionDisplays = document.querySelectorAll('question-display');
+    let focusedDisplay = questionDisplays[0];
+    let watingDisplay = questionDisplays[1];
+    focusedDisplay.setFocused(true);
+    watingDisplay.setFocused(false);
+    
+    function toggleDisplay() {
+        [focusedDisplay, watingDisplay] = [watingDisplay, focusedDisplay];
+        focusedDisplay.setFocused(true);
+        watingDisplay.setFocused(false);    
+    }    
+    
     const keyboard = document.querySelector('virtual-keyboard');
+    
+    let problem = worksheet.dequeueProblem();
+    let watingProblem = worksheet.dequeueProblem();
+    focusedDisplay.updateProblem(problem);
+    watingDisplay.updateProblem(watingProblem);
+    
 
     document.addEventListener('keydown', (e) => {
-        if (worksheet.problems.length === 0) {
+        if (e.key !== 'Enter') return;
+        if (false) {
             console.log('연습이 끝났습니다.');
             return;
         }
-        if (e.key === 'Enter') {
-            const userAns = questionDisplay.getUserAns();
-            const problem = worksheet.dequeueProblem();
-            questionDisplay.updateProblem(problem);
-            if (problem.isRight(userAns)) {
-                questionDisplay.clear();
-                console.log('정답입니다.');
-            } else {
-                console.log('오답입니다.');
-            }
-        }
-    });
 
+        
+
+        const userAns = focusedDisplay.getUserAns();
+
+        if (problem.isRight(userAns)) {
+            focusedDisplay.clear();
+            console.log('정답입니다.');
+
+            problem = watingProblem;
+            watingProblem = worksheet.dequeueProblem();
+
+            toggleDisplay();
+            watingDisplay.updateProblem(watingProblem);
+        } else {
+            console.log('오답입니다.');
+        }
+
+
+    });
 });
