@@ -1,31 +1,63 @@
 <!DOCTYPE html>
-<html lang="ko">
-
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="mobile-web-app-capable" content="yes">
-  <title>Mental Math</title>
-  <link rel="manifest" href="app.webmanifest" crossorigin="use-credentials" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Mental Math</title>
+    <link rel="manifest" href="app.webmanifest" crossorigin="use-credentials" />
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        header, footer {
+            background-color: #f8f9fa;
+            padding: 1em;
+            text-align: center;
+        }
+        main {
+            flex: 1;
+            padding: 1em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 18px;
+        }
+    </style>
 </head>
-
 <body>
-  <header>
-  </header>
-
-  <main>
-    <question-display></question-display>
-    <question-display></question-display>
-    <virtual-keyboard></virtual-keyboard>
-  </main>
-
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/decimal.js/10.4.3/decimal.js"></script>
-  <script type="module" src="app.js"></script>
-  <script type="module" src="question-display.js"></script>
-  <script type="module" src="virtual-keyboard.js"></script>
+    <header>
+        <h1>Header</h1>
+    </header>
+    <main>
+        <ul>
+            <li><a href="calc.html">Multiplication</a></li>
+            <li><a href="calc.html">mod7</a></li>
+            <li><a href="calc.html">Sqrt</a></li>
+            <li><a href="calc.html">Log10</a></li>
+            <li><a href="calc.html">Sin</a></li>
+        </ul>
+    </main>
+    <footer>
+        <p>Footer</p>
+    </footer>
 </body>
-
 </html>
