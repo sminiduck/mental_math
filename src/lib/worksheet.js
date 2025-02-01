@@ -1,8 +1,7 @@
 //worksheet.js
 import { problemGenerators } from "./mathUtils.js";
-export { WorkSheet };
 
-class WorkSheet {
+export default class WorkSheet {
     constructor(testLen) {
         this.testLength = testLen;
         this.cur = 0;

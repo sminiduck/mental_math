@@ -25,7 +25,6 @@ export default class Router {
 
   handleRoute() {
       const path = window.location.pathname;
-      console.log(path);
       const component = this.routes[path] || this.routes["/404"];
       document.getElementById("app").innerHTML = `<${component}></${component}>`;
   }

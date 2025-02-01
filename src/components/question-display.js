@@ -1,18 +1,28 @@
 //qestion-display.js
 
 class QuestionDisplay extends HTMLElement {
-    constructor() {
-        super();
-        this.attachShadow({ mode: 'open' });
-        this.render();
-        this.userAnsElement = this.shadowRoot.querySelector('.user-ans');
-        this.stateFocused = false;
-        this.addEventListeners();
+    static get observedAttributes() {
+        return ["disabled", "num", "question", "user-ans"];
     }
 
-    render()
-    {
-        const style = /*css*/`
+    constructor() {
+        super();
+    }
+
+    connectedCallback() {
+        this.attachShadow({ mode: 'open' });
+
+        const template = /*html*/`
+        <div class="problem">
+            <span class="problem-info">1</span>
+            <span class="question">1+1=</span>
+            <input class="user-ans" type="text" />
+        </div>
+        `;
+        this.shadowRoot.innerHTML = template;
+
+        const style = document.createElement("style");
+        style.textContent = /*css*/`
             .problem {
                 border: 1px solid #ccc;
                 padding: 10px;
@@ -38,111 +48,56 @@ class QuestionDisplay extends HTMLElement {
             font-weight: bold;
             border: none;
             }
+
             .problem-info, .question, .user-ans {
                 margin: 5px 0;
             }
         `;
-        
-        const template = /*html*/`
-        <style>${style}</style>
-        <div class="problem">
-            <span class="problem-info"></span>
-            <span class="question"></span>
-            <input class="user-ans" type="text" />
-        </div>
-        <script>
-            //calc.js
-            console.log('calc.js');
-            document.addEventListener('DOMContentLoaded', function () {
-                const worksheet = new WorkSheet(3);
-                let questionDisplays = document.querySelectorAll('question-display');
-                console.log(questionDisplays);
-                let focusedDisplay = questionDisplays[0];
-                let watingDisplay = questionDisplays[1];
-                focusedDisplay.setFocused(true);
-                watingDisplay.setFocused(false);
-                
-                function toggleDisplay() {
-                    [focusedDisplay, watingDisplay] = [watingDisplay, focusedDisplay];
-                    focusedDisplay.setFocused(true);
-                    watingDisplay.setFocused(false);    
-                }    
-                
-                let problem = worksheet.dequeueProblem();
-                let watingProblem = worksheet.dequeueProblem();
-                focusedDisplay.updateProblem(problem);
-                watingDisplay.updateProblem(watingProblem);
-                
+        this.shadowRoot.append(style);
 
-                document.addEventListener('keydown', (e) => {
-                    if (e.key !== 'Enter') return;
+        this.$userAns = this.shadowRoot.querySelector('.user-ans');
+        this.addEventListeners();
+    }
 
-                    const userAns = focusedDisplay.getUserAns();
-
-                    if (problem.isRight(userAns)) {
-                        focusedDisplay.clear();
-                        console.log('정답입니다.');
-
-                        problem = watingProblem;
-                        watingProblem = worksheet.dequeueProblem();
-
-                        toggleDisplay();
-                        watingDisplay.updateProblem(watingProblem);
-                    } else {
-                        console.log('오답입니다.');
-                    }
-
-                });
-            });
-        </script>
-        `;
-
-        this.shadowRoot.innerHTML = template;
+    attributeChangedCallback(name, oldValue, newValue) {
+        switch (name) {
+            case 'disabled':
+                this.$userAns.disabled = newValue;
+                break;
+            case 'num':
+                this.shadowRoot.querySelector('.problem-info').innerHTML = newValue;
+                break;
+            case 'question':
+                this.shadowRoot.querySelector('.question').innerHTML = newValue;
+                break;
+            case 'user-ans':
+                this.$userAns.value = newValue;
+                break;
+            default:
+                break;
+        }
     }
 
     addEventListeners() {
-        const functionKeys = ['Backspace', 'Delete'];
-        const numberKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
+        const filterKeys = 
+        ['Backspace', 'Delete']
+        + ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+        + ['-', '.'];
 
         document.addEventListener('keydown', (e) => {
-            if (!this.stateFocused) return;
-            if (functionKeys.includes(e.key)) {
-                if (e.key === 'Delete') {
-                    this.userAnsElement.value = '';
-                }
-                if (e.key === 'Backspace') {
-                    this.userAnsElement.value = this.userAnsElement.value.slice(0, -1);
-                }
-            } else if (numberKeys.includes(e.key)) {
-                this.userAnsElement.value += e.key;
+            if (!filterKeys.includes(e.key)) return;
+            switch (e.key) {
+                case 'Backspace':
+                    this.setAttribute('user-ans', this.$userAns.value.slice(0, -1));
+                    break;
+                case 'Delete':
+                    this.setAttribute('user-ans', '');
+                    break;
+                default:
+                    this.setAttribute('user-ans', this.$userAns.value + e.key);
+                    break;
             }
         });
-    }
-
-    clear() {
-        this.userAnsElement.value = '';
-    }
-
-    getUserAns() {
-        return this.userAnsElement.value;
-    }
-
-    setFocused(bool) {
-        this.stateFocused = bool;
-    }
-
-    updateProblem(problem) {
-        if (problem == null) {
-            this.shadowRoot.querySelector('.problem-info').innerHTML = '';
-            this.shadowRoot.querySelector('.question').innerHTML = '';
-            this.userAnsElement.value = '';
-            return;
-        }
-        const problemInfo = this.shadowRoot.querySelector('.problem-info');
-        const question = this.shadowRoot.querySelector('.question');
-
-        problemInfo.innerHTML = problem.info;
-        question.innerHTML = problem.question;
     }
 }
 
