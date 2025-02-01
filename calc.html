@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -8,13 +8,64 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="mobile-web-app-capable" content="yes">
   <title>Mental Math</title>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const operation = urlParams.get('operation');
+        console.log("Selected operation:", operation);
+        // operation 값을 사용하여 필요한 작업 수행
+    });
+  </script>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      background-color: #f8f9fa;
+      padding: 1em;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    main {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+    }
+    question-display {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    virtual-keyboard {
+      height: 50vh;
+      background-color: #e9ecef;
+      position: sticky;
+      bottom: 0;
+    }
+  </style>
 </head>
 
 <body>
   <header>
+    <h1>Mental Math</h1>
   </header>
 
   <main>
+    <h1>Calculator</h1>
+    <p>Operation: <span id="operation"></span></p>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const operation = urlParams.get('operation');
+            document.getElementById('operation').textContent = operation;
+        });
+    </script>
     <question-display></question-display>
     <question-display></question-display>
     <virtual-keyboard></virtual-keyboard>
@@ -22,7 +73,7 @@
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/decimal.js/10.4.3/decimal.js"></script>
-  <script type="module" src="app.js"></script>
+  <script type="module" src="calc.js"></script>
   <script type="module" src="question-display.js"></script>
   <script type="module" src="virtual-keyboard.js"></script>
 </body>
