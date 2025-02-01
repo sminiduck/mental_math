@@ -1,7 +1,7 @@
 // app.js
 import Router from "./router.js";
-import "./pages/home.js";
 import "./pages/about.js";
+import "./pages/home.js";
 
 // 라우트 설정
 const routes = {
