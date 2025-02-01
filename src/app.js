@@ -6,12 +6,9 @@ import "./pages/about.js";
 // 라우트 설정
 const routes = {
     "/": "about-page",
-    "/about": "about-page",
+    "/about": "home-page",
 };
 
-window.addEventListener('DOMContentLoaded', function() {
-    const appRouter = new Router(routes);
-    appRouter.init();
-});
 
-
+const appRouter = new Router(routes);
+appRouter.init();

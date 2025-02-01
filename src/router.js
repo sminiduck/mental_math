@@ -2,7 +2,6 @@
 export default class Router {
   constructor(routes) {
       this.routes = routes;
-      this.init();
   }
 
   init() {
@@ -14,8 +13,9 @@ export default class Router {
                   this.navigate(e.target.getAttribute("href"));
               }
           });
-          this.handleRoute();
       });
+      // 페이지 로드 시 한 번만 handleRoute 호출
+      this.handleRoute();
   }
 
   navigate(path) {
@@ -27,5 +27,6 @@ export default class Router {
       const path = window.location.pathname;
       const component = this.routes[path] || this.routes["/404"];
       document.getElementById("app").innerHTML = `<${component}></${component}>`;
+      console.log("route: ", path);
   }
 }

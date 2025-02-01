@@ -18,7 +18,7 @@ export default class WorkSheet {
     }
     
     dequeueProblem() {
-        let result = this.problems[0];
+        let result = this.problems[0] || null;
         this.problems.shift();
         return result;
     }

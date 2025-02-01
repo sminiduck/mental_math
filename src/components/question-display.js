@@ -14,8 +14,8 @@ class QuestionDisplay extends HTMLElement {
 
         const template = /*html*/`
         <div class="problem">
-            <span class="problem-info">1</span>
-            <span class="question">1+1=</span>
+            <span class="problem-info"></span>
+            <span class="question"></span>
             <input class="user-ans" type="text" />
         </div>
         `;

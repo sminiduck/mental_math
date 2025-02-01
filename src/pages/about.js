@@ -1,19 +1,19 @@
 //about.js
 import "../components/question-display.js";
 import "../components/virtual-keyboard.js";
-import WorkSheet from "../lib/worksheet.js";"../lib/worksheet.js";
+import WorkSheet from "../lib/worksheet.js";
 
 class AboutPage extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
-        const worksheet = new WorkSheet(3);
+        this.worksheet = new WorkSheet(3);
+        this.problem = this.worksheet.dequeueProblem();
     }
 
     connectedCallback() {
         const template = /*html*/`
             <h1>Calc Page</h1>
-            <button id="change">click me</button>
             <question-display></question-display>
             <virtual-keyboard></virtual-keyboard>
         `;
@@ -28,37 +28,36 @@ class AboutPage extends HTMLElement {
         `;
         this.shadowRoot.append(style);
         this.addEventListeners();
-    }
-
-    disconnectedCallback() {
-        this.removeEventListeners();
+        this.handleDisplayChange(this.problem.info, this.problem.question, '');
     }
 
     addEventListeners() {
-        this.shadowRoot.getElementById("change").addEventListener("click", this.handleChangeClick);
         document.addEventListener('keydown', this.handleKeyDown);
-    }
-
-    removeEventListeners() {
-        this.shadowRoot.getElementById("change").removeEventListener("click", this.handleChangeClick);
-        document.removeEventListener('keydown', this.handleKeyDown);
-    }
-
-    handleChangeClick = () => {
-        this.handleDisplayChange(20, "2+4=", 5);
     }
 
     handleKeyDown = (e) => {
         if (e.key !== 'Enter') return;
-        console.log("enter");
+        if (this.problem == null) return;
+        const $display = this.shadowRoot.querySelector("question-display");
+        const userAns = $display.getAttribute('user-ans');
+        if (this.problem.isRight(userAns)) {
+            console.log('정답입니다.');
+            this.problem = this.worksheet.dequeueProblem();
+            if (this.problem == null) {
+                console.log('테스트 종료');
+                return;
+            }
+            this.handleDisplayChange(this.problem.info, this.problem.question, '');
+        } else {
+            console.log('오답입니다.');
+        }
     }
 
-    handleDisplayChange = (num, question, userAns) => {
-        let display = this.shadowRoot.querySelector("question-display");
-        display.setAttribute('num', num);
-        display.setAttribute('question', question);
-        display.setAttribute('user-ans', userAns);
-        console.log("change");
+    handleDisplayChange = (num='x', question='', userAns='') => {
+        const $display = this.shadowRoot.querySelector("question-display");
+        $display.setAttribute('num', num);
+        $display.setAttribute('question', question);
+        $display.setAttribute('user-ans', userAns);
     }
 }
 
