@@ -25,7 +25,7 @@ export default class Router {
 
   navigate(path) {
     const PREFIX = "/mental_math";
-      history.pushState(null, "", `${PREFIX}path`);
+      history.pushState(null, "", `${PREFIX}${path}`);
       this.handleRoute();
   }
 
