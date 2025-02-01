@@ -1,3 +1,5 @@
+//qestion-display.js
+
 class QuestionDisplay extends HTMLElement {
     constructor() {
         super();
@@ -48,6 +50,51 @@ class QuestionDisplay extends HTMLElement {
             <span class="question"></span>
             <input class="user-ans" type="text" />
         </div>
+        <script>
+            //calc.js
+            console.log('calc.js');
+            document.addEventListener('DOMContentLoaded', function () {
+                const worksheet = new WorkSheet(3);
+                let questionDisplays = document.querySelectorAll('question-display');
+                console.log(questionDisplays);
+                let focusedDisplay = questionDisplays[0];
+                let watingDisplay = questionDisplays[1];
+                focusedDisplay.setFocused(true);
+                watingDisplay.setFocused(false);
+                
+                function toggleDisplay() {
+                    [focusedDisplay, watingDisplay] = [watingDisplay, focusedDisplay];
+                    focusedDisplay.setFocused(true);
+                    watingDisplay.setFocused(false);    
+                }    
+                
+                let problem = worksheet.dequeueProblem();
+                let watingProblem = worksheet.dequeueProblem();
+                focusedDisplay.updateProblem(problem);
+                watingDisplay.updateProblem(watingProblem);
+                
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key !== 'Enter') return;
+
+                    const userAns = focusedDisplay.getUserAns();
+
+                    if (problem.isRight(userAns)) {
+                        focusedDisplay.clear();
+                        console.log('정답입니다.');
+
+                        problem = watingProblem;
+                        watingProblem = worksheet.dequeueProblem();
+
+                        toggleDisplay();
+                        watingDisplay.updateProblem(watingProblem);
+                    } else {
+                        console.log('오답입니다.');
+                    }
+
+                });
+            });
+        </script>
         `;
 
         this.shadowRoot.innerHTML = template;
@@ -97,10 +144,6 @@ class QuestionDisplay extends HTMLElement {
         problemInfo.innerHTML = problem.info;
         question.innerHTML = problem.question;
     }
-    
-
 }
-
-
 
 customElements.define('question-display', QuestionDisplay);

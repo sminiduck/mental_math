@@ -1,8 +1,9 @@
-import { WorkSheet } from "./worksheet.js";
+//calc.js
+import { WorkSheet } from "../lib/worksheet.js";
 
 document.addEventListener('DOMContentLoaded', function () {
+    customElements.whenDefined("question-display").then(() => {
     const worksheet = new WorkSheet(3);
-    const questionDisplays = document.querySelectorAll('question-display');
     let focusedDisplay = questionDisplays[0];
     let watingDisplay = questionDisplays[1];
     focusedDisplay.setFocused(true);
@@ -13,8 +14,6 @@ document.addEventListener('DOMContentLoaded', function () {
         focusedDisplay.setFocused(true);
         watingDisplay.setFocused(false);    
     }    
-    
-    const keyboard = document.querySelector('virtual-keyboard');
     
     let problem = worksheet.dequeueProblem();
     let watingProblem = worksheet.dequeueProblem();
@@ -40,6 +39,6 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log('오답입니다.');
         }
 
-
+    });
     });
 });

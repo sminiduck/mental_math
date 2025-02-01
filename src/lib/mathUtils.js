@@ -1,3 +1,6 @@
+//mathUtils.js
+import './decimal.js';
+
 export { Problem, problemGenerators };
 
 // 기본 문제 class

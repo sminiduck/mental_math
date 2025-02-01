@@ -8,7 +8,7 @@
     "theme_color": "#59afe9", 
     "icons": [
         {
-            "src": "assets/cone.png",
+            "src": "../src/assets/cone.png",
             "type": "image/png",
             "sizes": "512x512"
         }

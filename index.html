@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
@@ -7,68 +7,10 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
     <title>Mental Math</title>
-    <link rel="manifest" href="app.webmanifest" crossorigin="use-credentials" />
-
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-        header, footer {
-            background-color: #f8f9fa;
-            padding: 1em;
-            text-align: center;
-            flex-shrink: 0;
-        }
-        main {
-            flex: 1;
-            padding: 1em;
-            overflow-y: auto;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start; /* 변경된 부분 */
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            background-color: #f0f0f0;
-            border: 1px solid #ccc;
-            margin: 10px 0;
-            width: 200px;
-            padding: 40px;
-            border-radius: 5px;
-        }
-        a {
-            text-decoration: none;
-            color: #007bff;
-            font-size: 18px;
-        }
-    </style>
+    <link rel="manifest" href="public/app.webmanifest" crossorigin="use-credentials" />
 </head>
 <body>
-    <header>
-        <h1>Header</h1>
-    </header>
-    <main>
-        <ul>
-            <li class="clickable"><a href="calc.html?operation=multiplication">Multiplication</a></li>
-            <li class="clickable"><a href="calc.html">mod7</a></li>
-            <li class="clickable"><a href="calc.html">Sqrt</a></li>
-            <li class="clickable"><a href="calc.html">Log10</a></li>
-            <li class="clickable"><a href="calc.html">Sin</a></li>
-            <li class="clickable"><a href="calc.html">Sin</a></li>
-            <li class="clickable"><a href="calc.html">Sin</a></li>
-            <li class="clickable"><a href="calc.html">Sin</a></li>
-        </ul>
-    </main>
-    <footer>
-        <p>Footer</p>
-    </footer>
-    <script type="module" src="index.js"></script>
+    <main id="app"></main>
+    <script type="module" src="src/app.js"></script>
 </body>
 </html>
