@@ -24,16 +24,14 @@ export default class Router {
   }
 
   navigate(path) {
-      history.pushState(null, "", path);
+    const PREFIX = "/mental_math";
+      history.pushState(null, "", `${PREFIX}path`);
       this.handleRoute();
   }
 
   handleRoute() {
       const path = window.location.pathname;
-      console.log("path: ", path);
       const component = this.routes[path] || this.routes["/404"];
-      console.log("component: ", component);
       document.getElementById("app").innerHTML = `<${component}></${component}>`;
-      console.log(`<${component}></${component}>`);
   }
 }
