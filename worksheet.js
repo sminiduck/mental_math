@@ -20,12 +20,7 @@ class WorkSheet {
     dequeueProblem() {
         let result = this.problems[0];
         this.problems.shift();
-        console.log(this.problems);
         return result;
-    }
-
-    printMahtTest() {
-        console.log(this.problems);
     }
 
     createProblem(index) {

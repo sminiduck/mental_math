@@ -24,12 +24,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.addEventListener('keydown', (e) => {
         if (e.key !== 'Enter') return;
-        if (false) {
-            console.log('연습이 끝났습니다.');
-            return;
-        }
-
-        
 
         const userAns = focusedDisplay.getUserAns();
 
