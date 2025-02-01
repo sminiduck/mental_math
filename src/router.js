@@ -1,7 +1,7 @@
 // router.js
 export default class Router {
-  constructor(routes) {
-      this.routes = routes;
+  constructor() {
+      this.routes = {};
   }
 
   init() {
@@ -16,6 +16,11 @@ export default class Router {
       });
       // 페이지 로드 시 한 번만 handleRoute 호출
       this.handleRoute();
+  }
+
+  addRoute(path, component) {
+        this.routes[path] = component;
+        return this;
   }
 
   navigate(path) {
