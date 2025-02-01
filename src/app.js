@@ -9,6 +9,9 @@ const routes = {
     "/about": "about-page",
 };
 
-// 라우터 생성
-const appRouter = new Router(routes);
-appRouter.init();
+window.addEventListener('DOMContentLoaded', function() {
+    const appRouter = new Router(routes);
+    appRouter.init();
+});
+
+
