@@ -11,15 +11,30 @@ class QuestionDisplay extends HTMLElement {
     render()
     {
         const style = /*css*/`
-            .problem-content {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-            }
             .problem {
                 border: 1px solid #ccc;
                 padding: 10px;
-                border-radius: 5px;
+            }
+            .problem-info {
+                width: 10%;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5em 1em;
+                margin-right: 5%;
+                background-color: #f8f9fa;
+                border-bottom: 1px solid #dee2e6;
+            }
+            
+            .question {
+            margin-right: 1em;
+            font-size: 1.5rem;
+            font-weight: bold;
+            }
+            
+            .user-ans {
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: none;
             }
             .problem-info, .question, .user-ans {
                 margin: 5px 0;
@@ -27,14 +42,12 @@ class QuestionDisplay extends HTMLElement {
         `;
         
         const template = /*html*/`
-            <style>${style}</style>
-            <div class="problem-content">
-                <div class="problem">
-                    <div class="problem-info"></div>
-                    <div class="question"></div>
-                    <input class="user-ans" type="text" />
-                </div>
-            </div>
+        <style>${style}</style>
+        <div class="problem">
+            <span class="problem-info"></span>
+            <span class="question"></span>
+            <input class="user-ans" type="text" />
+        </div>
         `;
 
         this.shadowRoot.innerHTML = template;

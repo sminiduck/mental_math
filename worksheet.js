@@ -43,7 +43,7 @@ class WorkSheet {
         ];
         const randomGenerator = enabledGenerators[Math.floor(Math.random() * enabledGenerators.length)];
         const problem = randomGenerator();
-        problem.info = `문항 ${index}`;
+        problem.info = `${index}`;
         return problem;
     }
 

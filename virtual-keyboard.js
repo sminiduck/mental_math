@@ -22,13 +22,11 @@ class VirtualKeyboard extends HTMLElement {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 0px;
-          margin: 10px 0;
+          height: 100%;
         }
         .key {
-          padding: 15px;
-          text-align: center;
           background: #ddd;
-          border: 1px solid #ccc;
+          border: none;
           cursor: pointer;
           font-size: 18px;
         }
@@ -36,11 +34,14 @@ class VirtualKeyboard extends HTMLElement {
           background: #bbb;
         }
         .key:active {
-          background: #999;
+          background-color: #d3d3d3;
         }
         .key[data-key="Delete"] {
             background-color: #d32f2f;
             grid-column: span 2;
+        }
+        .key[data-key="Backspace"] {
+            background-color: #f9a825;
         }
       `;
   
