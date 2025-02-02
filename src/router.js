@@ -25,7 +25,7 @@ export default class Router {
     }
 
     navigate(path) {
-        history.pushState(null, "", path);
+        history.pushState(null, "", `${window.PREFIX}${path}`);
         this.handleRoute();
     }
 
