@@ -1,6 +1,21 @@
 class HomePage extends HTMLElement {
+    constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+    }
+
     connectedCallback() {
-        const style = /*css*/`
+        const template = /*html*/`
+            <ul>
+                <li><a href="/calc" data-link>Multiplication</a></li>
+                <li><a href="/calc" data-link>mod7</a></li>
+                <li><a href="/calc" data-link>Sqrt</a></li>
+            </ul>
+        `;
+        this.shadowRoot.innerHTML = template;
+
+        const style = document.createElement("style");
+        style.textContent =  /*css*/`
         body {
             display: flex;
             flex-direction: column;
@@ -40,16 +55,7 @@ class HomePage extends HTMLElement {
             font-size: 18px;
         }
         `;
-
-
-        this.innerHTML = /*html*/`
-        <style>${style}</style>
-        <ul>
-            <li><a href="/about" data-link>Multiplication</a></li>
-            <li><a href="/about" data-link>mod7</a></li>
-            <li><a href="/about" data-link>Sqrt</a></li>
-        </ul>
-        `;
+        this.shadowRoot.append(style);
     }
 }
 
