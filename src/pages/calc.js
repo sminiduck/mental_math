@@ -6,27 +6,24 @@ import WorkSheet from "../lib/worksheet.js";
 class CalcPage extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
         this.worksheet = new WorkSheet(3);
         this.problem = this.worksheet.dequeueProblem();
     }
 
     connectedCallback() {
+        const style = /*css*/`
+        h1, a {
+            font-size: 2rem;
+            color: green;
+        }
+        `;
         const template = /*html*/`
-            <h1>Calc Page</h1>
+            <style>${style}</style>
+            <h1><a href="/" data-link>Calc Page</a></h1>
             <question-display></question-display>
             <virtual-keyboard></virtual-keyboard>
         `;
-        this.shadowRoot.innerHTML = template;
-
-        const style = document.createElement("style");
-        style.textContent = /*css*/`
-            h1 {
-                font-size: 2rem;
-                color: green;
-            }
-        `;
-        this.shadowRoot.append(style);
+        this.innerHTML = template;
         this.addEventListeners();
         this.handleDisplayChange(this.problem.info, this.problem.question, '');
     }
@@ -38,8 +35,10 @@ class CalcPage extends HTMLElement {
     handleKeyDown = (e) => {
         if (e.key !== 'Enter') return;
         if (this.problem == null) return;
-        const $display = this.shadowRoot.querySelector("question-display");
+        
+        const $display = document.querySelector("question-display");
         const userAns = $display.getAttribute('user-ans');
+
         if (this.problem.isRight(userAns)) {
             console.log('정답입니다.');
             this.problem = this.worksheet.dequeueProblem();
@@ -54,7 +53,7 @@ class CalcPage extends HTMLElement {
     }
 
     handleDisplayChange = (num = 'x', question = '', userAns = '') => {
-        const $display = this.shadowRoot.querySelector("question-display");
+        const $display = document.querySelector("question-display");
         $display.setAttribute('num', num);
         $display.setAttribute('question', question);
         $display.setAttribute('user-ans', userAns);

@@ -6,23 +6,30 @@ export default class Router {
 
     init() {
         console.log("init");
-        console.log(window.PREFIX, );
+        console.log("prefix: ", window.PREFIX);
         window.addEventListener("popstate", () => this.handleRoute());
         document.addEventListener("DOMContentLoaded", () => {
             document.body.addEventListener("click", (e) => {
-                if (e.target.matches("[data-link]")) {
-                    console.log("data-link");
-                    e.preventDefault();
-                    this.navigate(e.target.getAttribute("href"));
+                let target = e.target;
+
+                // Shadow DOM 내의 요소를 탐색
+                while (target && target !== document) {
+                    if (target.matches("[data-link]")) {
+                        console.log("data-link");
+                        e.preventDefault();
+                        this.navigate(target.getAttribute("href"));
+                        return;
+                    }
+                    target = target.parentNode || target.host;
                 }
             });
         });
         this.handleRoute();
+        console.log("init_end");
     }
 
     addRoute(path, component) {
         this.routes[`${window.PREFIX}${path}`] = component;
-        console.log(this.routes);
         return this;
     }
 
@@ -33,8 +40,9 @@ export default class Router {
 
     handleRoute() {
         const path = window.location.pathname;
-        console.log(path);
+        console.log(`handleRoute_path: ${path}`);
         const component = this.routes[path] || this.routes["/404"];
+        console.log("component: ", component);
         document.getElementById("app").innerHTML = `<${component}></${component}>`;
     }
 }
