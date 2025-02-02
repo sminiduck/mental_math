@@ -1,4 +1,5 @@
 # mental_math
+https://sminiduck.github.io/mental_math/
 
 ## 문제
 1. 암산능력을 길러주는 앱을 만들고 싶다.
