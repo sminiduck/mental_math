@@ -9,22 +9,18 @@ export default class Router {
         document.addEventListener("DOMContentLoaded", () => {
             document.body.addEventListener("click", (e) => {
                 if (e.target.matches("[data-link]")) {
+                    console.log("data-link");
                     e.preventDefault();
                     this.navigate(e.target.getAttribute("href"));
                 }
             });
         });
-        // 페이지 로드 시 한 번만 handleRoute 호출
-        //window.location.pathname가 "/mental_math/"일때 PREFIX = "/mental_math"
-        //window.location.pathname가 "/"일때 PREFIX = ""
-
-
-
         this.handleRoute();
     }
 
     addRoute(path, component) {
-        this.routes[`${PREFIX}${path}`] = component;
+        this.routes[`${window.PREFIX}${path}`] = component;
+        console.log(`${window.PREFIX}${path}`);
         return this;
     }
 
@@ -35,6 +31,7 @@ export default class Router {
 
     handleRoute() {
         const path = window.location.pathname;
+        console.log(path);
         const component = this.routes[path] || this.routes["/404"];
         document.getElementById("app").innerHTML = `<${component}></${component}>`;
     }

@@ -12,4 +12,3 @@ appRouter
     .addRoute('/calc', 'calc-page')
     .addRoute('/404', 'not-found-page')
     .init();
-appRouter.init();
