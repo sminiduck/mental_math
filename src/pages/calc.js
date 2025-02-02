@@ -12,16 +12,50 @@ class CalcPage extends HTMLElement {
 
     connectedCallback() {
         const style = /*css*/`
-        h1, a {
-            font-size: 2rem;
-            color: green;
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        header {
+            height: 50px;
+            margin: 0;
+            background-color: #333;
+            color: white;
+        }
+        main {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .display {
+            display: flex;
+            height: 50vh - 50px;
+            justify-content: center;
+            align-items: center;
+        }
+        question-display {
+            
+        }
+        virtual-keyboard {
+            height: 50vh;
+        }
+        h1 {
+            margin: 0;
         }
         `;
         const template = /*html*/`
             <style>${style}</style>
-            <h1><a href="/" data-link>Calc Page</a></h1>
-            <question-display></question-display>
-            <virtual-keyboard></virtual-keyboard>
+            <header>
+                <h1>계산 문제</h1>
+            </header>
+            <main>
+            <div class="display">
+                <question-display></question-display>
+            </div>
+                <virtual-keyboard></virtual-keyboard>
+            </main>
         `;
         this.innerHTML = template;
         this.addEventListeners();
@@ -35,7 +69,7 @@ class CalcPage extends HTMLElement {
     handleKeyDown = (e) => {
         if (e.key !== 'Enter') return;
         if (this.problem == null) return;
-        
+
         const $display = document.querySelector("question-display");
         const userAns = $display.getAttribute('user-ans');
 
