@@ -5,6 +5,8 @@ export default class Router {
     }
 
     init() {
+        console.log("init");
+        console.log(window.PREFIX, );
         window.addEventListener("popstate", () => this.handleRoute());
         document.addEventListener("DOMContentLoaded", () => {
             document.body.addEventListener("click", (e) => {
@@ -20,7 +22,7 @@ export default class Router {
 
     addRoute(path, component) {
         this.routes[`${window.PREFIX}${path}`] = component;
-        console.log(`${window.PREFIX}${path}`);
+        console.log(this.routes);
         return this;
     }
 
