@@ -1,17 +1,15 @@
 // app.js
+window.PREFIX = window.location.pathname.startsWith("/mental_math") ? "/mental_math" : "";
+
 import Router from "./router.js";
 import "./pages/about.js";
 import "./pages/home.js";
 
-// 라우트 설정
-// const PREFIX = "";
-const PREFIX = "/mental_math";
-
 const appRouter = new Router();
 appRouter
-    .addRoute(`${PREFIX}/`, 'home-page')
-    .addRoute(`${PREFIX}/about`, 'about-page')
-    .addRoute(`${PREFIX}/calc`, 'calc-page')
-    .addRoute(`${PREFIX}/404`, 'not-found-page')
+    .addRoute('/', 'home-page')
+    .addRoute('/about', 'about-page')
+    .addRoute('/calc', 'calc-page')
+    .addRoute('/404', 'not-found-page')
     .init();
 appRouter.init();
