@@ -17,7 +17,13 @@ export default class Router {
                     if (target.matches("[data-link]")) {
                         console.log("data-link");
                         e.preventDefault();
-                        this.navigate(target.getAttribute("href"));
+                        const href = target.getAttribute("href");
+                        if (href) {
+                            this.navigate(href);
+                        } else {
+                            const operation = target.closest('.modal').getAttribute('data-operation');
+                            this.navigate(`/calc?operation=${operation}`);
+                        }
                         return;
                     }
                     target = target.parentNode || target.host;
@@ -40,9 +46,10 @@ export default class Router {
 
     handleRoute() {
         const path = window.location.pathname;
+        const search = window.location.search;
         console.log(`handleRoute_path: ${path}`);
         const component = this.routes[path] || this.routes["/404"];
         console.log("component: ", component);
-        document.getElementById("app").innerHTML = `<${component}></${component}>`;
+        document.getElementById("app").innerHTML = `<${component} ${search}></${component}>`;
     }
 }

@@ -7,7 +7,7 @@ import "./pages/calc.js";
 
 const appRouter = new Router();
 appRouter
-    .addRoute('/', 'calculation-page')
-    .addRoute('/calc', 'calculation-page')
-    .addRoute('/404', 'not-found-page')
-    .init();
+  .addRoute('/', 'home-page')
+  .addRoute('/calc', 'calculation-page')
+  .addRoute('/404', 'not-found-page')
+  .init();

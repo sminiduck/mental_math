@@ -2,10 +2,10 @@
     "name": "mental math",
     "short_name": "math",
     "scope": "/mental_math/",
-    "start_url": "/mental_math/",  
-    "display": "standalone", 
-    "background_color": "#fff", 
-    "theme_color": "#59afe9", 
+    "start_url": "/mental_math/",
+    "display": "standalone",
+    "background_color": "#fff",
+    "theme_color": "#59afe9",
     "icons": [
         {
             "src": "../src/assets/cone.png",
@@ -14,4 +14,3 @@
         }
     ]
 }
-  
