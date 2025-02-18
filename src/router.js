@@ -55,7 +55,9 @@ export default function createRouter() {
       };
 
       window.addEventListener('hashchange', checkRoutes);
+      console.log(window.location.href, window.location.hash);
       window.location.hash = window.location.hash || '#/';
+      console.log(window.location.href);
       checkRoutes();
     },
     navigate(fragment, replace = false) {
