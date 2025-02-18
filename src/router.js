@@ -1,55 +1,73 @@
-// router.js
-export default class Router {
-    constructor() {
-        this.routes = {};
-    }
+export default function createRouter() {
+  const ROUTE_PARAMETER_REGEXP = /:(\w+)/g
+  const URL_REGEXP = '([^\\/]+)'
 
-    init() {
-        console.log("init");
-        console.log("prefix: ", window.PREFIX);
-        window.addEventListener("popstate", () => this.handleRoute());
-        document.addEventListener("DOMContentLoaded", () => {
-            document.body.addEventListener("click", (e) => {
-                let target = e.target;
+  const routes = [];
 
-                // Shadow DOM 내의 요소를 탐색
-                while (target && target !== document) {
-                    if (target.matches("[data-link]")) {
-                        console.log("data-link");
-                        e.preventDefault();
-                        const href = target.getAttribute("href");
-                        if (href) {
-                            this.navigate(href);
-                        } else {
-                            const operation = target.closest('.modal').getAttribute('data-operation');
-                            this.navigate(`/calc?operation=${operation}`);
-                        }
-                        return;
-                    }
-                    target = target.parentNode || target.host;
-                }
-            });
+  const router = {
+    addRoute(fragment, component) {
+      const params = [];
+      const parsedFragment = fragment.replace(ROUTE_PARAMETER_REGEXP, (_, paramName) => {
+        params.push(paramName);
+        return URL_REGEXP;
+      }).replace(/\//g, "\\/");
+
+      routes.push({
+        fragmentRegExp: new RegExp(`^${parsedFragment}$`),
+        component,
+        params,
+      });
+
+      console.log(routes);
+
+      return this;
+    },
+    start() {
+      const getUrlParams = (route, hash) => {
+        const params = {};
+        const matches = hash.match(route.fragmentRegExp);
+
+        matches.shift(); // 배열의 첫번째 값에는 url 전체가 담겨있으므로 제거해준다.
+        matches.forEach((paramValue, index) => {
+          const paramName = route.params[index];
+          params[paramName] = paramValue;
         });
-        this.handleRoute();
-        console.log("init_end");
-    }
+        // params = {name: 'IU', song: 'raindrop'}
+        return params;
+      };
 
-    addRoute(path, component) {
-        this.routes[`${window.PREFIX}${path}`] = component;
-        return this;
-    }
+      const checkRoutes = () => {
+        const currentRoute = routes.find(route =>
+          route.fragmentRegExp.test(window.location.hash));
 
-    navigate(path) {
-        history.pushState(null, "", `${window.PREFIX}${path}`);
-        this.handleRoute();
-    }
+        if (!currentRoute) {
+          console.log(window.location.hash);
+          console.error('No route found for the current hash.');
+          return;
+        }
 
-    handleRoute() {
-        const path = window.location.pathname;
-        const search = window.location.search;
-        console.log(`handleRoute_path: ${path}`);
-        const component = this.routes[path] || this.routes["/404"];
-        console.log("component: ", component);
-        document.getElementById("app").innerHTML = `<${component} ${search}></${component}>`;
+        if (currentRoute.params.length) {
+          // path parameters가 있는 url인 경우
+          const urlParams = getUrlParams(currentRoute, window.location.hash)
+          currentRoute.component(urlParams);
+        } else {
+          currentRoute.component();
+        }
+
+      };
+
+      window.addEventListener('hashchange', checkRoutes);
+      checkRoutes();
+    },
+    navigate(fragment, replace = false) {
+      if (replace) {
+        const href = window.location.href.replace(window.location.hash, "#" + fragment);
+        window.location.replace(href);
+      } else {
+        window.location.hash = fragment;
+      }
     }
+  };
+
+  return router;
 }

@@ -16,7 +16,7 @@ const STYLE = /*css*/`
     color: #333;
   }
   header {
-    height: 50px;
+    height: 4vh;
     background-color: #6200ea;
     color: white;
     display: flex;
@@ -25,7 +25,7 @@ const STYLE = /*css*/`
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   main {
-    height: calc(100vh - 50px);
+    height: 96vh;
     display: flex;
     flex-direction: column;
   }

@@ -84,18 +84,6 @@ const STYLE = /*css*/`
     box-shadow: var(--box-shadow);
     text-align: center;
   }
-  .close {
-    color: var(--primary-color);
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  .close:hover,
-  .close:focus {
-    color: var(--secondary-color);
-    text-decoration: none;
-    cursor: pointer;
-  }
   .start-btn {
     background-color: var(--primary-color);
     color: white;
@@ -115,16 +103,15 @@ const TEMPLATE = /*html*/`
   <main>
     <div class='stat'></div>
     <ul class="operation-list">
-      <li data-operation="Multiplication" data-link>Multiplication</li>
-      <li data-operation="mod7" data-link>mod7</li>
-      <li data-operation="Sqrt" data-link>Sqrt</li>
+      <li data-operation="Multiplication">Multiplication</li>
+      <li data-operation="mod7">mod7</li>
+      <li data-operation="Sqrt">Sqrt</li>
     </ul>
     <!-- 하단 모달창 -->
     <div class="modal" data-operation="">
       <div class="modal-content">
-        <span class="close">&times;</span>
         <p class="modal-text">Some text in the Modal..</p>
-        <button class="start-btn" data-link>Start</button>
+        <button class="start-btn" data-navigate="#/calc/:data-operation">Start</button>
       </div>
     </div>
   </main>
@@ -145,22 +132,11 @@ class HomePage extends HTMLElement {
 
   setupModal() {
     const modal = this.querySelector('.modal');
-    const closeBtn = this.querySelector('.close');
-    const startBtn = this.querySelector('.start-btn');
-
-    closeBtn.addEventListener('click', () => {
-      modal.style.display = 'none';
-    });
 
     window.addEventListener('click', (event) => {
       if (event.target === modal) {
         modal.style.display = 'none';
       }
-    });
-
-    startBtn.addEventListener('click', () => {
-      const operation = modal.getAttribute('data-operation');
-      this.navigateToCalc(operation);
     });
   }
 
@@ -175,13 +151,9 @@ class HomePage extends HTMLElement {
         modal.setAttribute('data-operation', operation);
         modalText.textContent = `You selected ${operation}`;
         modal.style.display = 'flex';
+        modal.querySelector('.start-btn').setAttribute('data-navigate', `#/calc/${operation}`);
       });
     });
-  }
-
-  navigateToCalc(operation) {
-    const router = document.querySelector('router-component');
-    router.navigate(`/calc?operation=${operation}`);
   }
 }
 

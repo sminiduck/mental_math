@@ -2,8 +2,8 @@
 window.PREFIX = window.location.pathname.startsWith("/mental_math") ? "/mental_math" : "";
 
 import Router from "./router.js";
-import "./pages/home.js";
-import "./pages/calc.js";
+import "../src/pages/home.js";
+import "../src/pages/calc.js";
 
 const appRouter = new Router();
 appRouter

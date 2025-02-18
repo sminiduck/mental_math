@@ -16,7 +16,7 @@ const STYLE = /*css*/`
     background-color: #f9f9f9;
   }
   .problem-info {
-    margin: 5%;
+    margin-left: 2%;
     width: 5%;
     text-align: center;
     font-size: 1.5em;
@@ -25,7 +25,6 @@ const STYLE = /*css*/`
   }
   
   .question {
-    margin-left: 5%;
     width: 35%;
     text-align: right;
     font-size: 1.8em;
