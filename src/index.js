@@ -1,17 +1,18 @@
+//index.js
 import createRouter from "./router.js";
 import "./pages/home.js";
 import "./pages/calc.js";
 
 const pages = {
   home: () => document.getElementById("app").innerHTML = `<home-page></home-page>`,
-  calc: (params) => document.getElementById("app").innerHTML = `<calculation-page name="${params.name}"></calculation-page>`
+  calc: (params) => document.getElementById("app").innerHTML = `<calculation-page oper="${params.oper}"></calculation-page>`
 }
 
 const router = createRouter();
 
 router
   .addRoute("#/", pages.home)
-  .addRoute("#/calc/:name", pages.calc)
+  .addRoute("#/calc/:oper", pages.calc)
   .start();
 
 window.addEventListener("click", event => {

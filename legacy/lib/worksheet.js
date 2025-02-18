@@ -4,7 +4,9 @@ import { problemGenerators } from "./mathUtils.js";
 export default class WorkSheet {
   constructor(testLen) {
     this.testLength = testLen;
+    this.cur = 0;
     this.problems = [];
+    this.userAns = '';
     this.init();
   }
 
@@ -15,20 +17,44 @@ export default class WorkSheet {
     }
   }
 
-  deque() {
+  dequeueProblem() {
     let result = this.problems[0] || null;
     this.problems.shift();
     return result;
   }
 
-  createProblem(num) {
+  createProblem(index) {
     const enabledGenerators = [
       problemGenerators.createMultiplicationProblem,
       problemGenerators.createMod7Problem
     ];
     const randomGenerator = enabledGenerators[Math.floor(Math.random() * enabledGenerators.length)];
     const problem = randomGenerator();
-    problem.info = `${num}`;
+    problem.info = `${index}`;
     return problem;
+  }
+
+  // event handler
+  clickNumber(num) {
+    this.userAns += num;
+  }
+
+  clickDelete() {
+    this.userAns = this.userAns.slice(0, -1);
+  }
+
+  clickClear() {
+    this.userAns = '';
+  }
+
+  clickAns() {
+    if (this.userAns === '') return;
+
+    const currentProblem = this.problems[this.cur];
+
+    if (currentProblem.isRight(this.userAns)) {
+      this.cur++;
+      this.clickClear();
+    }
   }
 }

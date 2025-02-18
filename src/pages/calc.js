@@ -83,7 +83,7 @@ const handleEnterKey = (e, problemsQueue, worksheet, $displays) => {
     console.log('Correct');
 
     problemsQueue.shift();
-    problemsQueue.push(worksheet.dequeueProblem());
+    problemsQueue.push(worksheet.deque());
 
     swapDisplays($displays);
 
@@ -112,7 +112,7 @@ class CalculationPage extends HTMLElement {
   constructor() {
     super();
     this.worksheet = new WorkSheet(10);
-    this.problemsQueue = [this.worksheet.dequeueProblem(), this.worksheet.dequeueProblem()];
+    this.problemsQueue = [this.worksheet.deque(), this.worksheet.deque()];
     this.$displays = {
       active: null,
       disabled: null
@@ -130,8 +130,7 @@ class CalculationPage extends HTMLElement {
     document.addEventListener('keydown', this.handleKeyDown);
 
     // URL 매개변수 처리
-    const urlParams = new URLSearchParams(window.location.search);
-    const operation = urlParams.get('operation');
+    const operation = this.getAttribute('oper');
     console.log(`Operation: ${operation}`);
   }
 

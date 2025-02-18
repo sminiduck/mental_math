@@ -18,8 +18,6 @@ export default function createRouter() {
         params,
       });
 
-      console.log(routes);
-
       return this;
     },
     start() {
@@ -57,6 +55,7 @@ export default function createRouter() {
       };
 
       window.addEventListener('hashchange', checkRoutes);
+      window.location.hash = window.location.hash || '#/';
       checkRoutes();
     },
     navigate(fragment, replace = false) {
