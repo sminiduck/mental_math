@@ -98,20 +98,27 @@ const STYLE = /*css*/`
   }
 `;
 
+const OPERATIONS = [
+  { name: 'Multiplication', dataOperation: 'multiplication' },
+  { name: 'Mod7', dataOperation: 'mod7' },
+  { name: 'Sqrt', dataOperation: 'sqrt' },
+  { name: 'Sum', dataOperation: 'sum' },
+];
+
 const TEMPLATE = /*html*/`
   <header>header</header>
   <main>
     <div class='stat'></div>
     <ul class="operation-list">
-      <li data-operation="Multiplication">Multiplication</li>
-      <li data-operation="mod7">mod7</li>
-      <li data-operation="Sqrt">Sqrt</li>
+      ${OPERATIONS.map(op =>
+        `<li data-operation="${op.dataOperation}">${op.name}</li>`).join('')
+      }
     </ul>
     <!-- 하단 모달창 -->
     <div class="modal" data-operation="">
       <div class="modal-content">
         <p class="modal-text">Some text in the Modal..</p>
-        <button class="start-btn" data-navigate="#/calc/:data-operation">Start</button>
+        <button class="start-btn" data-navigate="#/calc/{:data-operation}">Start</button>
       </div>
     </div>
   </main>
@@ -127,7 +134,7 @@ class HomePage extends HTMLElement {
   connectedCallback() {
     this.innerHTML = createTemplate(STYLE, TEMPLATE);
     this.setupModal();
-    this.setupListClick();
+    this.setupLiClick();
   }
 
   setupModal() {
@@ -140,18 +147,18 @@ class HomePage extends HTMLElement {
     });
   }
 
-  setupListClick() {
-    const listItems = this.querySelectorAll('.operation-list li');
-    const modal = this.querySelector('.modal');
-    const modalText = this.querySelector('.modal-text');
+  setupLiClick() {
+    const $$liList = this.querySelectorAll('.operation-list li');
+    const $modal = this.querySelector('.modal');
+    const $modalText = this.querySelector('.modal-text');
 
-    listItems.forEach(item => {
+    $$liList.forEach(item => {
       item.addEventListener('click', () => {
         const operation = item.getAttribute('data-operation');
-        modal.setAttribute('data-operation', operation);
-        modalText.textContent = `You selected ${operation}`;
-        modal.style.display = 'flex';
-        modal.querySelector('.start-btn').setAttribute('data-navigate', `#/calc/${operation}`);
+        $modal.setAttribute('data-operation', operation);
+        $modalText.textContent = `You selected ${operation}`;
+        $modal.style.display = 'flex';
+        $modal.querySelector('.start-btn').setAttribute('data-navigate', `#/calc/${operation}`);
       });
     });
   }

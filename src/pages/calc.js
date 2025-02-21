@@ -59,79 +59,95 @@ const TEMPLATE = /*html*/`
   </main>
 `;
 
-// Function to update display attributes
-const updateDisplay = (num, question, userAns, $display) => {
-  $display.setAttribute('num', num);
-  $display.setAttribute('question', question);
-  $display.setAttribute('user-ans', userAns);
-};
-
-// Function to swap active and disabled displays
-const swapDisplays = ($displays) => {
-  [$displays.active, $displays.disabled] = [$displays.disabled, $displays.active];
-  $displays.active.removeAttribute('disabled');
-  $displays.disabled.setAttribute('disabled', '');
-};
-
-// Handle Enter key press event
-const handleEnterKey = (e, problemsQueue, worksheet, $displays) => {
-  if (e.key !== 'Enter') return;
-
-  const userAns = $displays.active.getAttribute('user-ans');
-
-  if (problemsQueue[0].isRight(userAns)) {
-    console.log('Correct');
-
-    problemsQueue.shift();
-    problemsQueue.push(worksheet.deque());
-
-    swapDisplays($displays);
-
-    // Handle completion of problems
-    if (problemsQueue[0] == null) {
-      console.log('Finish');
-      updateDisplay('', '', '', $displays.disabled);
-      return;
-    }
-    if (problemsQueue[1] == null) {
-      updateDisplay(problemsQueue[0].info, problemsQueue[0].question, '', $displays.active);
-      updateDisplay('', '', '', $displays.disabled);
-      return;
-    }
-
-    updateDisplay(problemsQueue[0].info, problemsQueue[0].question, '', $displays.active);
-    updateDisplay(problemsQueue[1].info, problemsQueue[1].question, '', $displays.disabled);
-    console.log('Next');
-  } else {
-    console.log('Wrong');
+class DispalyPair {
+  constructor(active, disabled) {
+    this.active = active;
+    this.disabled = disabled;
   }
-};
+  
+  updateActiveDisplay(num, question, userAns) {
+    this.active.setAttribute('num', num);
+    this.active.setAttribute('question', question);
+    this.active.setAttribute('user-ans', userAns);
+  }
+
+  updateDisabledDisplay(num, question, userAns) {
+    this.disabled.setAttribute('num', num);
+    this.disabled.setAttribute('question', question);
+    this.disabled.setAttribute('user-ans', userAns);
+  }
+
+  swap() {
+    [this.active, this.disabled] = [this.disabled, this.active];
+    this.active.removeAttribute('disabled');
+    this.disabled.setAttribute('disabled', '');
+  }
+}
+
+class Quiz {
+  constructor($displayPair, worksheet) {
+    this.worksheet = worksheet;
+    this.questionQueue = [this.worksheet.deque(), this.worksheet.deque()];
+    this.$displayPair = $displayPair;
+    this.$displayPair.updateActiveDisplay(this.questionQueue[0].info, this.questionQueue[0].questionText, '');
+    this.$displayPair.updateDisabledDisplay(this.questionQueue[1].info, this.questionQueue[1].questionText, '');
+  }
+
+  checkCureentAnswer() {
+    const userAns = this.$displayPair.active.getAttribute('user-ans');
+    console.log('userAns', userAns);
+    console.log('this.questionQueue[0]', this.questionQueue[0]);
+    return this.questionQueue[0].checkAnswer(userAns);
+  }
+
+  nextQuestion() {
+    if (this.checkCureentAnswer()) {
+      console.log('Correct');
+
+      this.questionQueue.shift();
+      this.questionQueue.push(this.worksheet.deque());
+
+      this.$displayPair.swap();
+
+      if (this.questionQueue[0] == null) {
+        console.log('Finish');
+        this.$displayPair.updateDisplay('', '', '');
+        return;
+      }
+      if (this.questionQueue[1] == null) {
+        this.$displayPair.updateDisplay(this.questionQueue[0].info, this.questionQueue[0].questionText, '');
+        this.$displayPair.updateDisplay('', '', '');
+        return;
+      }
+
+      this.$displayPair.updateActiveDisplay(this.questionQueue[0].info, this.questionQueue[0].questionText, '');
+      this.$displayPair.updateDisabledDisplay(this.questionQueue[1].info, this.questionQueue[1].questionText, '');
+      console.log('Next');
+    } else {
+      console.log('Wrong');
+    }
+  }
+}
 
 // Define CalculationPage class
 class CalculationPage extends HTMLElement {
   constructor() {
     super();
-    this.worksheet = new WorkSheet(10);
-    this.problemsQueue = [this.worksheet.deque(), this.worksheet.deque()];
-    this.$displays = {
-      active: null,
-      disabled: null
-    };
+    const operation = this.getAttribute('oper');
+    console.log(`Operation: ${operation}`);
+    this.worksheet = new WorkSheet(operation, 5);
     this.handleKeyDown = this.handleKeyDown.bind(this);
   }
-
+  
   // Called when the component is added to the DOM
   connectedCallback() {
     this.innerHTML = TEMPLATE;
-    this.$displays.active = document.querySelector("question-display:not([disabled])");
-    this.$displays.disabled = document.querySelector("question-display[disabled]");
-    updateDisplay(this.problemsQueue[0].info, this.problemsQueue[0].question, '', this.$displays.active);
-    updateDisplay(this.problemsQueue[1].info, this.problemsQueue[1].question, '', this.$displays.disabled);
+    this.$displayPair = new DispalyPair(
+      document.querySelector("question-display:not([disabled])"),
+      document.querySelector("question-display[disabled]")
+    );
     document.addEventListener('keydown', this.handleKeyDown);
-
-    // URL 매개변수 처리
-    const operation = this.getAttribute('oper');
-    console.log(`Operation: ${operation}`);
+    this.quiz = new Quiz(this.$displayPair, this.worksheet);
   }
 
   // Called when the component is removed from the DOM
@@ -141,7 +157,9 @@ class CalculationPage extends HTMLElement {
 
   // Key down event handler
   handleKeyDown(e) {
-    handleEnterKey(e, this.problemsQueue, this.worksheet, this.$displays);
+    if (e.key === 'Enter') {
+      this.quiz.nextQuestion();
+    }
   }
 }
 

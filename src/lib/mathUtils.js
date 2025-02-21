@@ -1,16 +1,16 @@
 //mathUtils.js
 import './decimal.js';
 
-export { problemGenerators };
+export { getProblemGenerator };
 
 // 기본 문제 class
-class Problem {
-  constructor(question, answer) {
-    this.question = question;
+class Question {
+  constructor(questionText, answer) {
+    this.questionText = questionText;
     this.answer = answer;
   }
 
-  isRight(userAnswer) {
+  checkAnswer(userAnswer) {
     throw new Error('isRight method should be implemented by subclasses');
   }
 }
@@ -26,27 +26,27 @@ function isFloatCorrect(userAnswer, correctAnswer, precision = 3) {
 }
 
 // 곱셈 문제 class
-class MultiplicationProblem extends Problem {
+class MultiplicationQuestion extends Question {
   constructor(num1, num2) {
     const question = `${num1} &times; ${num2} =`;
     const answer = num1 * num2;
     super(question, answer);
   }
 
-  isRight(userAnswer) {
+  checkAnswer(userAnswer) {
     return isIntegerCorrect(userAnswer, this.answer);
   }
 }
 
 // 나머지 문제 class
-class Mod7Problem extends Problem {
+class Mod7Question extends Question {
   constructor(num) {
     const question = `${num} mod 7 =`;
     const answer = num % 7;
     super(question, answer);
   }
 
-  isRight(userAnswer) {
+  checkAnswer(userAnswer) {
     return isIntegerCorrect(userAnswer, this.answer);
   }
 }
@@ -58,17 +58,26 @@ function generateProblem(domain, problem) {
 
 // 문제 생성기 객체
 const problemGenerators = {
-  createMultiplicationProblem() {
+  multiplication: () => {
     const domain = createDomain2D([[[11, 19, 1], [11, 19, 1]]], []);
     const [num1, num2] = getRandomFromSet(domain);
-    return new MultiplicationProblem(num1, num2);
+    return new MultiplicationQuestion(num1, num2);
   },
-  createMod7Problem() {
+  mod7: () => {
     const domain = createDomain([[1, 31, 1]], []);
     const num = getRandomFromSet(domain);
-    return new Mod7Problem(num);
+    return new Mod7Question(num);
   }
 };
+
+// 문제 생성기 함수
+function getProblemGenerator(type) {
+  const generator = problemGenerators[type];
+  if (!generator) {
+    throw new Error(`Unknown problem type: ${type}`);
+  }
+  return generator();
+}
 
 // 팩토리얼 함수 (메모이제이션을 사용하여 성능 개선)
 const factorialCache = {
