@@ -65,19 +65,15 @@ class DispalyPair {
     this.disabled = disabled;
   }
 
-  getUserAns() {
+  get userAns() {
     return this.active.getAttribute('user-ans');
   }
-  
-  updateDisplay(state, num, question, userAns='') {
+
+  updateDisplay(state, data={}) {
+    const { num='', question='', userAns = '' } = data;
     this[state].setAttribute('num', num);
     this[state].setAttribute('question', question);
     this[state].setAttribute('user-ans', userAns);
-  }
-
-  setDisabled() {
-    this.disabled.setAttribute('disabled', '');
-    this.active.setAttribute('disabled', '');
   }
 
   swap() {
@@ -88,42 +84,44 @@ class DispalyPair {
 }
 
 class Quiz {
-  constructor($displayPair, worksheet) {
+  constructor(worksheet, $displayPair) {
     this.worksheet = worksheet;
-    this.questionQueue = [this.worksheet.deque(), this.worksheet.deque()];
-    this.$displayPair = $displayPair;
-    this.$displayPair.updateDisplay('active', this.questionQueue[0].info, this.questionQueue[0].questionText, '');
-    this.$displayPair.updateDisplay('disabled', this.questionQueue[1].info, this.questionQueue[1].questionText, '');
+    
+    const { active, disabled } = $displayPair;
+    this.$displayPair = new DispalyPair(active, disabled);
+
+    this.$displayPair.updateDisplay('active', this.worksheet.peekObj(0));
+    this.$displayPair.updateDisplay('disabled', this.worksheet.peekObj(1));
   }
 
   checkCureentAnswer() {
-    const userAns = this.$displayPair.getUserAns();
+    const userAns = this.$displayPair.userAns;
+    const question = this.worksheet.peek(0);
     console.log('userAns', userAns);
-    console.log('this.questionQueue[0]', this.questionQueue[0]);
-    return this.questionQueue[0].checkAnswer(userAns);
+    console.log('this.worksheet.peek(0)', question);
+    return question.checkAnswer(userAns);
   }
 
   nextQuestion() {
     if (this.checkCureentAnswer()) {
       console.log('Correct');
 
-      this.questionQueue.shift();
-      this.questionQueue.push(this.worksheet.deque());
-
+      this.worksheet.deque();
       this.$displayPair.swap();
 
-      if (this.questionQueue[0] == null) {
+      if (this.worksheet.peek(0) == null) {
         console.log('Finish');
-        this.$displayPair.updateDisplay('disabled', '', '', '');
+        this.$displayPair.updateDisplay('disabled');
         this.$displayPair.active.setAttribute('disabled', '');
         return 0;
       }
-      if (this.questionQueue[1] == null) {
-        this.$displayPair.updateDisplay('disabled', '', '', '');
+
+      if (this.worksheet.peek(1) == null) {
+        this.$displayPair.updateDisplay('disabled');
         return;
       }
 
-      this.$displayPair.updateDisplay('disabled', this.questionQueue[1].info, this.questionQueue[1].questionText, '');
+      this.$displayPair.updateDisplay('disabled', this.worksheet.peekObj(1));
       console.log('Next');
     } else {
       console.log('Wrong');
@@ -143,14 +141,14 @@ class CalculationPage extends HTMLElement {
   connectedCallback() {
     this.innerHTML = TEMPLATE;
 
-    const $displayPair = new DispalyPair(
-      document.querySelector("question-display:not([disabled])"),
-      document.querySelector("question-display[disabled]")
-    );
+    const displayPair = {
+      active: document.querySelector("question-display:not([disabled])"),
+      disabled: document.querySelector("question-display[disabled]")
+    }
     
-    const worksheet = new WorkSheet(this.operation, 2);
+    const worksheet = new WorkSheet(this.operation, 5);
 
-    this.quiz = new Quiz($displayPair, worksheet);
+    this.quiz = new Quiz(worksheet, displayPair);
 
     document.addEventListener('keydown', (e) => this.handleKeyDown(e));
   }

@@ -1,29 +1,41 @@
 //worksheet.js
-import { getProblemGenerator } from "./mathUtils.js";
+import { getQuestionGenerator } from "./mathUtils.js";
 
 export default class WorkSheet {
-  constructor(problemType, totalProblem) {
+  constructor(problemType, count) {
     this.problemType = problemType;
-    this.totalProblem = totalProblem;
-    this.problemList = [];
-    this.init();
+    this.questionQueue = [];
+    this.init(count);
   }
 
-  init() {
-    for (let i = 0; i < this.totalProblem; i++) {
+  peek(index) {
+    return this.questionQueue[index];
+  }
+
+  peekObj(index) {
+    if (this.questionQueue[index] == null) {
+      return null;
+    }
+    const data = {
+      num: this.questionQueue[index].info,
+      question: this.questionQueue[index].questionText,
+    }
+    return data;
+  }
+  
+  deque() {
+    return this.questionQueue.shift();
+  }
+  
+  init(count) {
+    for (let i = 0; i < count; i++) {
       const problem = this.createProblem(i + 1);
-      this.problemList.push(problem);
+      this.questionQueue.push(problem);
     }
   }
 
-  deque() {
-    let result = this.problemList[0] || null;
-    this.problemList.shift();
-    return result;
-  }
-
   createProblem(num) {
-    const problem = getProblemGenerator(this.problemType);
+    const problem = getQuestionGenerator(this.problemType);
     console.log('proble', problem);
     problem.info = `${num}`;
     return problem;

@@ -12,5 +12,5 @@
     "files.autoSaveDelay": 1000,
     "liveServer.settings.AutoStart": true,
     "livePreview.defaultPreviewPath": "/index.html",
-    "liveServer.settings.port": 5502
+    "liveServer.settings.port": 5503
 }

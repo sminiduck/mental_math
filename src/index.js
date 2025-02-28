@@ -5,7 +5,10 @@ import "./pages/calc.js";
 
 const pages = {
   home: () => document.getElementById("app").innerHTML = `<home-page></home-page>`,
-  calc: (params) => document.getElementById("app").innerHTML = `<calculation-page oper="${params.oper}"></calculation-page>`
+  calc: (params) => { 
+    document.getElementById("app").innerHTML = `<calculation-page oper="${params.oper}"></calculation-page>`;
+    document.querySelector("calculation-page").data = {'test': 'test'};
+  }
 }
 
 const router = createRouter();
