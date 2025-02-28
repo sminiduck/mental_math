@@ -52,7 +52,7 @@ const TEMPLATE = /*html*/`
   </header>
   <main>
     <div class="display">
-      <question-display active></question-display>
+      <question-display></question-display>
       <question-display disabled></question-display>
     </div>
     <virtual-keyboard></virtual-keyboard>
@@ -64,17 +64,20 @@ class DispalyPair {
     this.active = active;
     this.disabled = disabled;
   }
+
+  getUserAns() {
+    return this.active.getAttribute('user-ans');
+  }
   
-  updateActiveDisplay(num, question, userAns) {
-    this.active.setAttribute('num', num);
-    this.active.setAttribute('question', question);
-    this.active.setAttribute('user-ans', userAns);
+  updateDisplay(state, num, question, userAns='') {
+    this[state].setAttribute('num', num);
+    this[state].setAttribute('question', question);
+    this[state].setAttribute('user-ans', userAns);
   }
 
-  updateDisabledDisplay(num, question, userAns) {
-    this.disabled.setAttribute('num', num);
-    this.disabled.setAttribute('question', question);
-    this.disabled.setAttribute('user-ans', userAns);
+  setDisabled() {
+    this.disabled.setAttribute('disabled', '');
+    this.active.setAttribute('disabled', '');
   }
 
   swap() {
@@ -89,12 +92,12 @@ class Quiz {
     this.worksheet = worksheet;
     this.questionQueue = [this.worksheet.deque(), this.worksheet.deque()];
     this.$displayPair = $displayPair;
-    this.$displayPair.updateActiveDisplay(this.questionQueue[0].info, this.questionQueue[0].questionText, '');
-    this.$displayPair.updateDisabledDisplay(this.questionQueue[1].info, this.questionQueue[1].questionText, '');
+    this.$displayPair.updateDisplay('active', this.questionQueue[0].info, this.questionQueue[0].questionText, '');
+    this.$displayPair.updateDisplay('disabled', this.questionQueue[1].info, this.questionQueue[1].questionText, '');
   }
 
   checkCureentAnswer() {
-    const userAns = this.$displayPair.active.getAttribute('user-ans');
+    const userAns = this.$displayPair.getUserAns();
     console.log('userAns', userAns);
     console.log('this.questionQueue[0]', this.questionQueue[0]);
     return this.questionQueue[0].checkAnswer(userAns);
@@ -111,17 +114,16 @@ class Quiz {
 
       if (this.questionQueue[0] == null) {
         console.log('Finish');
-        this.$displayPair.updateDisplay('', '', '');
-        return;
+        this.$displayPair.updateDisplay('disabled', '', '', '');
+        this.$displayPair.active.setAttribute('disabled', '');
+        return 0;
       }
       if (this.questionQueue[1] == null) {
-        this.$displayPair.updateDisplay(this.questionQueue[0].info, this.questionQueue[0].questionText, '');
-        this.$displayPair.updateDisplay('', '', '');
+        this.$displayPair.updateDisplay('disabled', '', '', '');
         return;
       }
 
-      this.$displayPair.updateActiveDisplay(this.questionQueue[0].info, this.questionQueue[0].questionText, '');
-      this.$displayPair.updateDisabledDisplay(this.questionQueue[1].info, this.questionQueue[1].questionText, '');
+      this.$displayPair.updateDisplay('disabled', this.questionQueue[1].info, this.questionQueue[1].questionText, '');
       console.log('Next');
     } else {
       console.log('Wrong');
@@ -133,32 +135,38 @@ class Quiz {
 class CalculationPage extends HTMLElement {
   constructor() {
     super();
-    const operation = this.getAttribute('oper');
-    console.log(`Operation: ${operation}`);
-    this.worksheet = new WorkSheet(operation, 5);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.operation = this.getAttribute('oper');
+    console.log(`Operation: ${this.operation}`);
   }
   
   // Called when the component is added to the DOM
   connectedCallback() {
     this.innerHTML = TEMPLATE;
-    this.$displayPair = new DispalyPair(
+
+    const $displayPair = new DispalyPair(
       document.querySelector("question-display:not([disabled])"),
       document.querySelector("question-display[disabled]")
     );
-    document.addEventListener('keydown', this.handleKeyDown);
-    this.quiz = new Quiz(this.$displayPair, this.worksheet);
+    
+    const worksheet = new WorkSheet(this.operation, 2);
+
+    this.quiz = new Quiz($displayPair, worksheet);
+
+    document.addEventListener('keydown', (e) => this.handleKeyDown(e));
   }
 
   // Called when the component is removed from the DOM
   disconnectedCallback() {
-    document.removeEventListener('keydown', this.handleKeyDown);
+    document.removeEventListener('keydown', (e) => this.handleKeyDown(e));
   }
 
   // Key down event handler
   handleKeyDown(e) {
     if (e.key === 'Enter') {
-      this.quiz.nextQuestion();
+      if(this.quiz.nextQuestion() == 0) {
+        alert('Finish');
+        document.removeEventListener('keydown', (e) => this.handleKeyDown(e));
+      }
     }
   }
 }
