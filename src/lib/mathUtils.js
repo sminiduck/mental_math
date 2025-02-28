@@ -14,7 +14,6 @@ class Question {
   }
 }
 
-
 // 곱셈 문제 class
 class MultiplicationQuestion extends Question {
   constructor(num1, num2) {
@@ -41,6 +40,18 @@ class Mod7Question extends Question {
   }
 }
 
+class SqrtQuestion extends Question {
+  constructor(num) {
+    const question = `√${num} =`;
+    const answer = Math.sqrt(num);
+    super(question, answer);
+  }
+
+  checkAnswer(userAnswer) {
+    return isFloatCorrect(userAnswer, this.answer, 2);
+  }
+}
+
 const questionGenerators = {
   multiplication: () => {
     const [num1, num2] = [ getRandomInt(11, 19), getRandomInt(11, 19) ];
@@ -49,6 +60,10 @@ const questionGenerators = {
   mod7: () => {
     const num = getRandomInt(1, 31);
     return new Mod7Question(num);
+  },
+  sqrt: () => {
+    const num = getRandomInt(2, 5);
+    return new SqrtQuestion(num);
   }
 };
 
@@ -68,7 +83,7 @@ function getRandomInt(min, max) {
 // 정수로 완전히 일치하는지 확인하는 함수
 function isIntegerCorrect(userAnswer, correctAnswer) {
   return parseInt(userAnswer, 10) === parseInt(correctAnswer, 10);
-  }
+}
   
 // 특정 소수점 범위까지 일치하는지 확인하는 함수
 function isFloatCorrect(userAnswer, correctAnswer, precision = 3) {

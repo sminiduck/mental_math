@@ -1,7 +1,7 @@
 //calc.js
 import "../components/question-display.js";
 import "../components/virtual-keyboard.js";
-import WorkSheet from "../lib/worksheet.js";
+import { autoGenWorkSheet } from "../lib/worksheet.js";
 
 // Define styles
 const STYLE = /*css*/`
@@ -146,8 +146,7 @@ class CalculationPage extends HTMLElement {
       disabled: document.querySelector("question-display[disabled]")
     }
     
-    const worksheet = new WorkSheet(this.operation, 5);
-
+    const worksheet = new autoGenWorkSheet(this.operation, 5);
     this.quiz = new Quiz(worksheet, displayPair);
 
     document.addEventListener('keydown', (e) => this.handleKeyDown(e));

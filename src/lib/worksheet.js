@@ -1,11 +1,9 @@
 //worksheet.js
 import { getQuestionGenerator } from "./mathUtils.js";
 
-export default class WorkSheet {
-  constructor(problemType, count) {
-    this.problemType = problemType;
+class WorkSheet {
+  constructor() {
     this.questionQueue = [];
-    this.init(count);
   }
 
   peek(index) {
@@ -26,7 +24,15 @@ export default class WorkSheet {
   deque() {
     return this.questionQueue.shift();
   }
-  
+}
+
+export class autoGenWorkSheet extends WorkSheet {
+  constructor(problemType, count) {
+    super();
+    this.problemType = problemType;
+    this.init(count);
+  }
+
   init(count) {
     for (let i = 0; i < count; i++) {
       const problem = this.createProblem(i + 1);
