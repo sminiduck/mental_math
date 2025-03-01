@@ -2,7 +2,6 @@
 import "../components/question-display.js";
 import "../components/virtual-keyboard.js";
 import { autoGenWorkSheet } from "../lib/worksheet.js";
-import { loadAllProblems } from "../question/index.js";
 
 // Define styles
 const STYLE = /*css*/`
@@ -138,11 +137,21 @@ class CalculationPage extends HTMLElement {
     console.log(`Operation: ${this.operation}`);
   }
   
-  // Called when the component is added to the DOM
-  async connectedCallback() {
+  connectedCallback() {
+    this.render();
+    this.init();
+    this.attachEventListeners();
+  }
+  
+  disconnectedCallback() {
+    document.removeEventListener('keydown', (e) => this.handleKeyDown(e));
+  }
+
+  render() {
     this.innerHTML = TEMPLATE;
-    await loadAllProblems();
-    
+  }
+
+  init() {
     const displayPair = {
       active: document.querySelector("question-display:not([disabled])"),
       disabled: document.querySelector("question-display[disabled]")
@@ -150,25 +159,21 @@ class CalculationPage extends HTMLElement {
     
     const worksheet = new autoGenWorkSheet(this.operation, 5);
     this.quiz = new Quiz(worksheet, displayPair);
-
-    document.addEventListener('keydown', (e) => this.handleKeyDown(e));
   }
 
-  // Called when the component is removed from the DOM
-  disconnectedCallback() {
-    document.removeEventListener('keydown', (e) => this.handleKeyDown(e));
+  attachEventListeners() {
+    document.addEventListener('keydown', (e) => this.handleKeyDown(e));
   }
 
   // Key down event handler
   handleKeyDown(e) {
-    if (e.key === 'Enter') {
-      if(this.quiz.nextQuestion() == 0) {
-        alert('Finish');
-        document.removeEventListener('keydown', (e) => this.handleKeyDown(e));
-      }
+    if (e.key !== 'Enter') return;
+    const end = this.quiz.nextQuestion();
+    if(end === 0) {
+      alert('Finish');
+      document.removeEventListener('keydown', (e) => this.handleKeyDown(e));
     }
   }
 }
 
-// Define custom element
 customElements.define("calculation-page", CalculationPage);

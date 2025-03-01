@@ -1,10 +1,8 @@
 //worksheet.js
-import QuestionRegistry, { loadAllProblems } from "../question/index.js";
+import QuestionRegistry from "../question/indexQ.js";
 
 class WorkSheet {
-  constructor() {
-    this.questionQueue = [];
-  }
+  questionQueue = [];
 
   peek(index) {
     return this.questionQueue[index];

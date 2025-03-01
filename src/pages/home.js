@@ -1,5 +1,5 @@
 //home.js
-import QuestionRegistry, { loadAllProblems } from "../question/index.js";
+import QuestionRegistry from "../question/indexQ.js";
 
 const STYLE = /*css*/`
   :root {
@@ -131,9 +131,9 @@ class HomePage extends HTMLElement {
 
   async render() {
     this.innerHTML = createTemplate(STYLE, TEMPLATE);
-    await loadAllProblems();
-    
-    const operations = QuestionRegistry.getQuestionTypes();
+    await QuestionRegistry.loadAllProblems();
+
+    const operations = QuestionRegistry.questionTypes;
     console.log(operations);
     
     document.querySelector('.operation-list').innerHTML += operations.map(op =>
