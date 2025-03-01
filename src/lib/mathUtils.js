@@ -1,6 +1,6 @@
 //mathUtils.js
 
-export { getQuestionGenerator };
+export { Question, isIntegerCorrect, isFloatCorrect, factorial, getRandomInt };
 
 // 기본 문제 class
 class Question {
@@ -13,68 +13,6 @@ class Question {
     throw new Error('isRight method should be implemented by subclasses');
   }
 }
-
-// 곱셈 문제 class
-class MultiplicationQuestion extends Question {
-  constructor(num1, num2) {
-    const question = `${num1} &times; ${num2} =`;
-    const answer = num1 * num2;
-    super(question, answer);
-  }
-  
-  checkAnswer(userAnswer) {
-    return isIntegerCorrect(userAnswer, this.answer);
-  }
-}
-
-// 나머지 문제 class
-class Mod7Question extends Question {
-  constructor(num) {
-    const question = `${num} mod 7 =`;
-    const answer = num % 7;
-    super(question, answer);
-  }
-  
-  checkAnswer(userAnswer) {
-    return isIntegerCorrect(userAnswer, this.answer);
-  }
-}
-
-class SqrtQuestion extends Question {
-  constructor(num) {
-    const question = `√${num} =`;
-    const answer = Math.sqrt(num);
-    super(question, answer);
-  }
-
-  checkAnswer(userAnswer) {
-    return isFloatCorrect(userAnswer, this.answer, 2);
-  }
-}
-
-const questionGenerators = {
-  multiplication: () => {
-    const [num1, num2] = [ getRandomInt(11, 19), getRandomInt(11, 19) ];
-    return new MultiplicationQuestion(num1, num2);
-  },
-  mod7: () => {
-    const num = getRandomInt(1, 31);
-    return new Mod7Question(num);
-  },
-  sqrt: () => {
-    const num = getRandomInt(2, 5);
-    return new SqrtQuestion(num);
-  }
-};
-
-function getQuestionGenerator(type) {
-  const generator = questionGenerators[type];
-  if (!generator) {
-    throw new Error(`Unknown problem type: ${type}`);
-  }
-  return generator();
-}
-
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;

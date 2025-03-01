@@ -1,5 +1,5 @@
 //worksheet.js
-import { getQuestionGenerator } from "./mathUtils.js";
+import QuestionRegistry, { loadAllProblems } from "../question/index.js";
 
 class WorkSheet {
   constructor() {
@@ -41,8 +41,8 @@ export class autoGenWorkSheet extends WorkSheet {
   }
 
   createProblem(num) {
-    const problem = getQuestionGenerator(this.problemType);
-    console.log('proble', problem);
+    const generator = QuestionRegistry.getGenerator(this.problemType);
+    const problem = generator();
     problem.info = `${num}`;
     return problem;
   }

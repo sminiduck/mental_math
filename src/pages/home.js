@@ -1,3 +1,6 @@
+//home.js
+import QuestionRegistry, { loadAllProblems } from "../question/index.js";
+
 const STYLE = /*css*/`
   :root {
     --background-color: #f0f0f0;
@@ -98,21 +101,11 @@ const STYLE = /*css*/`
   }
 `;
 
-const OPERATIONS = [
-  { name: 'Multiplication', dataOperation: 'multiplication' },
-  { name: 'Mod7', dataOperation: 'mod7' },
-  { name: 'Sqrt', dataOperation: 'sqrt' },
-  { name: 'Sum', dataOperation: 'sum' },
-];
-
 const TEMPLATE = /*html*/`
   <header>header</header>
   <main>
     <div class='stat'></div>
     <ul class="operation-list">
-      ${OPERATIONS.map(op =>
-        `<li data-operation="${op.dataOperation}">${op.name}</li>`).join('')
-      }
     </ul>
     <!-- 하단 모달창 -->
     <div class="modal" data-operation="">
@@ -132,34 +125,35 @@ const createTemplate = (style, template) => /*html*/`
 
 class HomePage extends HTMLElement {
   connectedCallback() {
-    this.innerHTML = createTemplate(STYLE, TEMPLATE);
-    this.setupModal();
-    this.setupLiClick();
+    this.render();
+    this.attachEventListeners();
   }
 
-  setupModal() {
-    const modal = this.querySelector('.modal');
+  async render() {
+    this.innerHTML = createTemplate(STYLE, TEMPLATE);
+    await loadAllProblems();
+    
+    const operations = QuestionRegistry.getQuestionTypes();
+    console.log(operations);
+    
+    document.querySelector('.operation-list').innerHTML += operations.map(op =>
+      `<li data-operation="${op.type}">${op.name}</li>`
+    ).join('');
+    
+  }
 
-    window.addEventListener('click', (event) => {
-      if (event.target === modal) {
-        modal.style.display = 'none';
+  attachEventListeners() {
+    this.querySelector(".operation-list").addEventListener("click", (event) => {
+      if (event.target.tagName === "LI") {
+        const operation = event.target.dataset.operation;
+        this.querySelector(".modal .modal-text").textContent = `You selected ${operation}`;
+        this.querySelector(".modal").style.display = "flex";
+        this.querySelector(".start-btn").dataset.navigate = `#/calc/${operation}`;
       }
     });
-  }
 
-  setupLiClick() {
-    const $$liList = this.querySelectorAll('.operation-list li');
-    const $modal = this.querySelector('.modal');
-    const $modalText = this.querySelector('.modal-text');
-
-    $$liList.forEach(item => {
-      item.addEventListener('click', () => {
-        const operation = item.getAttribute('data-operation');
-        $modal.setAttribute('data-operation', operation);
-        $modalText.textContent = `You selected ${operation}`;
-        $modal.style.display = 'flex';
-        $modal.querySelector('.start-btn').setAttribute('data-navigate', `#/calc/${operation}`);
-      });
+    this.querySelector(".start-btn").addEventListener("click", () => {
+      window.location.hash = this.querySelector(".start-btn").dataset.navigate;
     });
   }
 }

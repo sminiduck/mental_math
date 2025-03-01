@@ -7,6 +7,7 @@ export default function createRouter() {
   const router = {
     addRoute(fragment, component) {
       const params = [];
+      
       const parsedFragment = fragment.replace(ROUTE_PARAMETER_REGEXP, (_, paramName) => {
         params.push(paramName);
         return URL_REGEXP;

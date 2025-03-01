@@ -2,6 +2,7 @@
 import "../components/question-display.js";
 import "../components/virtual-keyboard.js";
 import { autoGenWorkSheet } from "../lib/worksheet.js";
+import { loadAllProblems } from "../question/index.js";
 
 // Define styles
 const STYLE = /*css*/`
@@ -138,9 +139,10 @@ class CalculationPage extends HTMLElement {
   }
   
   // Called when the component is added to the DOM
-  connectedCallback() {
+  async connectedCallback() {
     this.innerHTML = TEMPLATE;
-
+    await loadAllProblems();
+    
     const displayPair = {
       active: document.querySelector("question-display:not([disabled])"),
       disabled: document.querySelector("question-display[disabled]")
