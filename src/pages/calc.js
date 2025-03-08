@@ -48,6 +48,7 @@ const STYLE = /*css*/`
 const TEMPLATE = /*html*/`
   <style>${STYLE}</style>
   <header>
+    <button id="back-button" data-navigate="#/">뒤로가기</button>
     <h1>Calculation Problems</h1>
   </header>
   <main>
@@ -135,6 +136,7 @@ class CalculationPage extends HTMLElement {
     super();
     this.operation = this.getAttribute('oper');
     console.log(`Operation: ${this.operation}`);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
   
   connectedCallback() {
@@ -144,7 +146,7 @@ class CalculationPage extends HTMLElement {
   }
   
   disconnectedCallback() {
-    document.removeEventListener('keydown', (e) => this.handleKeyDown(e));
+    this.removeEventListeners();
   }
 
   render() {
@@ -162,16 +164,19 @@ class CalculationPage extends HTMLElement {
   }
 
   attachEventListeners() {
-    document.addEventListener('keydown', (e) => this.handleKeyDown(e));
+    document.addEventListener('keydown', this.handleKeyDown);
   }
 
-  // Key down event handler
+  removeEventListeners() {
+    document.removeEventListener('keydown', this.handleKeyDown);
+  }
+
   handleKeyDown(e) {
     if (e.key !== 'Enter') return;
     const end = this.quiz.nextQuestion();
     if(end === 0) {
       alert('Finish');
-      document.removeEventListener('keydown', (e) => this.handleKeyDown(e));
+      this.removeEventListeners();
     }
   }
 }

@@ -63,6 +63,7 @@ const createTemplate = (style, template) => /*html*/`
 class QuestionDisplay extends HTMLElement {
   constructor() {
     super();
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
   
   connectedCallback() {
@@ -73,6 +74,10 @@ class QuestionDisplay extends HTMLElement {
     
     this.$userAns = this.shadowRoot.querySelector('.user-ans');
     this.addEventListeners();
+  }
+
+  disconnectedCallback() {
+    this.removeEventListeners();
   }
 
   // Observe changes to these attributes
@@ -99,27 +104,33 @@ class QuestionDisplay extends HTMLElement {
 
   // Add event listeners
   addEventListeners() {
+    document.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  removeEventListeners() {
+    document.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  handleKeyDown(e) {
     const filterKeys = [
       'Backspace', 'Delete',
       '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
       '-', '.'
     ];
 
-    document.addEventListener('keydown', (e) => {
-      if (this.hasAttribute('disabled')) return;
-      if (!filterKeys.includes(e.key)) return;
-      switch (e.key) {
-        case 'Backspace':
-          this.setAttribute('user-ans', this.$userAns.value.slice(0, -1));
-          break;
-        case 'Delete':
-          this.setAttribute('user-ans', '');
-          break;
-        default:
-          this.setAttribute('user-ans', this.$userAns.value + String(e.key));
-          break;
-      }
-    });
+    if (this.hasAttribute('disabled')) return;
+    if (!filterKeys.includes(e.key)) return;
+    switch (e.key) {
+      case 'Backspace':
+        this.setAttribute('user-ans', this.$userAns.value.slice(0, -1));
+        break;
+      case 'Delete':
+        this.setAttribute('user-ans', '');
+        break;
+      default:
+        this.setAttribute('user-ans', this.$userAns.value + String(e.key));
+        break;
+    }
   }
 }
 

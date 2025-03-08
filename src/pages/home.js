@@ -129,9 +129,8 @@ class HomePage extends HTMLElement {
     this.attachEventListeners();
   }
 
-  async render() {
+  render() {
     this.innerHTML = createTemplate(STYLE, TEMPLATE);
-    await QuestionRegistry.loadAllProblems();
 
     const operations = QuestionRegistry.questionTypes;
     console.log(operations);
@@ -152,8 +151,10 @@ class HomePage extends HTMLElement {
       }
     });
 
-    this.querySelector(".start-btn").addEventListener("click", () => {
-      window.location.hash = this.querySelector(".start-btn").dataset.navigate;
+    this.querySelector(".modal").addEventListener("click", (event) => {
+      if (event.target.classList.contains("modal")) {
+        this.querySelector(".modal").style.display = "none";
+      }
     });
   }
 }

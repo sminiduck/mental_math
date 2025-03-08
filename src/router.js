@@ -12,16 +12,20 @@ export default function createRouter() {
         params.push(paramName);
         return URL_REGEXP;
       }).replace(/\//g, "\\/");
-
+      
       routes.push({
         fragmentRegExp: new RegExp(`^${parsedFragment}$`),
         component,
         params,
       });
-
+      
       return this;
     },
     start() {
+      console.log(window.location.href, window.location.hash);
+      window.location.hash = window.location.hash || '#/';
+      console.log(window.location.href);
+      
       const getUrlParams = (route, hash) => {
         const params = {};
         const matches = hash.match(route.fragmentRegExp);
@@ -56,9 +60,6 @@ export default function createRouter() {
       };
 
       window.addEventListener('hashchange', checkRoutes);
-      console.log(window.location.href, window.location.hash);
-      window.location.hash = window.location.hash || '#/';
-      console.log(window.location.href);
       checkRoutes();
     },
     navigate(fragment, replace = false) {

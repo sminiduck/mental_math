@@ -1,4 +1,5 @@
 //index.js
+import QuestionRegistry from "./question/indexQ.js";
 import createRouter from "./router.js";
 import "./pages/home.js";
 import "./pages/calc.js";
@@ -11,6 +12,7 @@ const pages = {
   }
 }
 
+await QuestionRegistry.loadAllProblems();
 const router = createRouter();
 
 router
